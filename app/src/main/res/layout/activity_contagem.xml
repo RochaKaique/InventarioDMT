@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="Localidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spLocalidade" />
+
+        <TextView
+            android:id="@+id/tvStatusBluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorBtRfid"
+            android:textSize="20dip" />
+
+        <Button
+            android:id="@+id/btIniciaLeitura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:onClick="conectaBluetooth"
+            android:text="@string/connection_read" />
+
+        <TextView
+            android:id="@+id/tvQuantidadePendente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/pending"
+            android:textSize="20dip" />
+
+        <TextView
+            android:id="@+id/tvTotalEquipamentosInicial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorBlack"
+            android:text="000"
+            android:textColor="@color/colorYellow"
+            android:textSize="100dip" />
+
+        <Button
+            android:id="@+id/btAcionarContagem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:text="@string/score_starting"
+                android:onClick="acionaContagem"/>
+
+        <Button
+            android:id="@+id/btFinalizarContagem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:text="@string/end_score"
+            android:onClick="finalizarContagem"/>
+
+        <TextView
+            android:id="@+id/tvQuantidadeEncontrada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/amount_found"
+            android:textSize="20dip"/>
+
+        <TextView
+            android:id="@+id/tvValorLido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorBlack"
+            android:text="000"
+            android:textColor="@color/colorRed"
+            android:textSize="100dip" />
+
+        <Button
+            android:id="@+id/btGerarRelatorio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:text="@string/generate_report"
+            android:onClick="gerarRelatorio"/>
+    </LinearLayout>
+</ScrollView>

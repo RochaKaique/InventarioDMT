@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/locality" />
+
+        <Spinner
+            android:id="@+id/spLocalidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/departament" />
+
+        <Spinner
+            android:id="@+id/spDepartamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/equipt_type" />
+
+        <Spinner
+            android:id="@+id/spTipoEquipamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/equipt_type" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/manufacturer" />
+
+        <Spinner
+            android:id="@+id/spFabricante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/model" />
+
+        <Spinner
+            android:id="@+id/spModelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/serial" />
+
+        <EditText
+            android:id="@+id/etSerial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:longClickable="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/patrimony" />
+
+        <EditText
+            android:id="@+id/etPatrimonio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_name" />
+
+        <Spinner
+            android:id="@+id/spUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status"/>
+
+        <Spinner
+            android:id="@+id/spStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btConectaBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connection_read"
+                android:onClick="verificaConexoes"/>
+
+            <TextView
+                android:id="@+id/etRespConect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorYellow"
+            android:text="@string/phrase_rfid"
+            android:gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rfid_read"
+                android:onClick="habilitaLerRfid"/>
+
+            <TextView
+                android:id="@+id/tvRecebeRfid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBtRfid"
+                android:gravity="center"
+                android:lines="2"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="salvarEquipamento"
+            android:text="@string/save" />
+    </LinearLayout>
+
+</ScrollView>

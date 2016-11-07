@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tvVerificaBluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorRed"/>
+
+        <ImageView
+            android:layout_width="280dip"
+            android:layout_height="80dip"
+            android:layout_gravity="center_horizontal"
+            android:elevation="3dp"
+            android:src="@drawable/tivit" />
+
+        <RelativeLayout
+            android:layout_marginTop="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:gravity="center_vertical"
+            android:layout_weight="0.76">
+
+            <Button
+                android:text="TESTE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button2"
+
+                android:onClick="abreAteste"
+                android:layout_alignParentBottom="true">
+
+            </Button>
+
+
+            <TextView
+                android:id="@+id/tvUploadDB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableTop="@drawable/ic_upload_db_24p"
+                android:elevation="3dp"
+                android:onClick="clicaAbrir"
+                android:text="Atualizar DB Central"
+                android:layout_alignBaseline="@+id/tvEquipamentosCadastrados"
+                android:layout_alignBottom="@+id/tvEquipamentosCadastrados"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="14dp"
+                android:layout_marginEnd="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableTop="@drawable/ic_print_black_24dp"
+                android:elevation="3dp"
+                android:text="@string/generate_report"
+                android:id="@+id/textView3"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/tvUploadDB"
+                android:layout_alignStart="@+id/tvUploadDB"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                android:id="@+id/tvDownloadDados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableTop="@drawable/ic_download_db_24p"
+                android:elevation="3dp"
+                android:onClick="clicaAbrir"
+                android:text="Atualizar DB Local"
+                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/tvContagemEquipamentos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableTop="@drawable/ic_system_update_alt_black_24dp"
+                android:elevation="3dp"
+                android:onClick="clicaAbrir"
+                android:text="@string/score"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/tvDownloadDados"
+                android:layout_alignStart="@+id/tvDownloadDados"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp" />
+
+            <TextView
+                android:id="@+id/tvCadastrarEquipamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableTop="@drawable/ic_add_to_queue_black_24dp"
+                android:elevation="3dp"
+                android:onClick="clicaAbrir"
+                android:text="@string/register"
+                android:textAlignment="center"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/tvEquipamentosCadastrados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:drawableTop="@drawable/ic_dvr_black_24dp"
+                android:elevation="3dp"
+                android:onClick="clicaAbrir"
+                android:text="@string/registred"
+                android:layout_alignBaseline="@+id/tvDownloadDados"
+                android:layout_alignBottom="@+id/tvDownloadDados"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

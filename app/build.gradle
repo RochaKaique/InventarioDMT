@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "25.0.0"
+    defaultConfig {
+        applicationId "com.tivit.inventariodmt"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/itextg-5.5.9.jar')
+    compile files('libs/android-core-3.2.1.jar')
+    compile files('libs/core-3.2.1.jar')
+    compile files('libs/library-1.0.16.jar')
+    compile files('libs/gson-2.7.jar')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile 'com.android.support:design:24.2.1'
+}
