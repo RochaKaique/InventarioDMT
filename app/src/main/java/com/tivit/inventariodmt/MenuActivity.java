@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 import com.tivit.inventariodmt.util.ConexaoInternet;
 
 public class MenuActivity extends AppCompatActivity {
@@ -67,7 +68,7 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ContagemActivity.class));
                 break;
             case R.id.tvDownloadDados:
-                if(isConnected()) {
+                if(Utilidades.isConnected(getApplicationContext())) {
                     SyncAdapter.sincronizarAhora(getApplicationContext(), false);
                 }
                 else
@@ -80,7 +81,7 @@ public class MenuActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.tvUploadDB:
-                if(isConnected()) {
+                if(Utilidades.isConnected(getApplicationContext())) {
                     AlertDialog.Builder msg = new AlertDialog.Builder(this);
                     msg.setTitle("ATENÇÃO").setMessage("Este procedimento deve ser feito ao final de suas atividades \n\n <<Isto Irá Apagar Seus Dados Locais>> \n\n Condifima a Solicitação de Upload de Dados?");
                     msg.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -114,11 +115,5 @@ public class MenuActivity extends AppCompatActivity {
     {
         Intent it = new Intent(this, TestActivity.class);
         startActivity(it);
-    }
-
-    private boolean isConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

@@ -1,6 +1,9 @@
 package com.tivit.inventariodmt.dataconsistency.utils;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 
@@ -89,6 +92,31 @@ public class Utilidades {
         Log.i("Cursor a JSONObject", String.valueOf(jObject));
 
         return jObject;
+    }
+
+    public static int networkState(Context cont){
+        ConnectivityManager cm = (ConnectivityManager)cont.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected)
+        {
+            boolean isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+            if (isWiFi){
+                return 1;
+            }
+            return 2;
+        }
+        else{
+            return -1;
+        }
+    }
+
+
+    public static boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 
