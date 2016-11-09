@@ -230,19 +230,7 @@ public class FormEquipamentoActivity extends AppCompatActivity {
                 if(strRfid != strData)
                     strRfid = strRfid + strData;
                 recebeRfid.setText("");
-                recebeRfid.setText(strRfid);
-                //System.out.println("V A L O R :" +new String(data));
-                //strRfid = "";
-                /*int i = 0;
-                //System.out.println(" V A L O R: " +new String(data).replaceAll("\n", ""));
-                String[] valores = new String[1];
-                for(i = 0; i<valores.length; i++) {
-                    valores[i] = new String(data);
-                }
-                recebeRfid.setText(valores[0] + valores[1]);
-                if (i > 1) {
-                    i = 0;
-                }*/
+                recebeRfid.setText(strRfid.toUpperCase());
             }
         }
     };

@@ -54,7 +54,7 @@ public class ContagemActivity extends AppCompatActivity {
     private List rfidInvalido;
     private Spinner localidade;
 
-    ConnectionThread connect;
+    ConnectionThreadContagem connect;
     private static boolean leitura = false;
 
     private static final String ARQUIVO = "relatorioEquipamentos.pdf";
@@ -137,7 +137,7 @@ public class ContagemActivity extends AppCompatActivity {
                 statusBluetooth.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
                         + data.getStringExtra("btDevAddress"));
 
-                connect = new ConnectionThread(data.getStringExtra("btDevAddress"));
+                connect = new ConnectionThreadContagem(data.getStringExtra("btDevAddress"));
                 connect.start();
             } else {
                 statusBluetooth.setText("Nenhum dispositivo selecionado.");
@@ -169,6 +169,7 @@ public class ContagemActivity extends AppCompatActivity {
 
     public void acionaContagem(View view) {
         if (leitura == false) {
+            enviarMensagem("L");
             acionarContagem.setText(R.string.pause_score);
             finalizarContagem.setVisibility(View.VISIBLE);
             leitura = true;
@@ -178,6 +179,12 @@ public class ContagemActivity extends AppCompatActivity {
             leitura = false;
         }
     }
+
+    public void enviarMensagem(String mensagem) {
+        byte[] data = mensagem.getBytes();
+        connect.write(data);
+    }
+
 
     public void finalizarContagem(View view) {
         System.out.println("F I N A L I Z A R");
