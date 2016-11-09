@@ -69,7 +69,8 @@ public class MenuActivity extends AppCompatActivity {
                 break;
             case R.id.tvDownloadDados:
                 if(Utilidades.isConnected(getApplicationContext())) {
-                    SyncAdapter.sincronizarAhora(getApplicationContext(), false);
+                    startActivity(new Intent(this, DownloadActivity.class));
+                    //SyncAdapter.sincronizarAhora(getApplicationContext(), false);
                 }
                 else
                 {
@@ -79,6 +80,8 @@ public class MenuActivity extends AppCompatActivity {
                     msg.setNeutralButton("OK",null);
                     msg.show();
                 }
+
+
                 break;
             case R.id.tvUploadDB:
                 if(Utilidades.isConnected(getApplicationContext())) {

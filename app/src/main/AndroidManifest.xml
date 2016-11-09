@@ -83,7 +83,8 @@
             android:exported="false"
             android:syncable="true" />
 
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".DownloadActivity"></activity>
     </application>
 
 </manifest>

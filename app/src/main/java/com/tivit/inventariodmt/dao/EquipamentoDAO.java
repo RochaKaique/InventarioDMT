@@ -46,7 +46,7 @@ public class EquipamentoDAO {
     }
 
     public boolean findByRfidInLocale(String rfid, int localidade) {
-        Cursor cursor = getDb().rawQuery("SELECT * FROM Inv_FS_Item_config WHERE inv_fs_ic_RFID = " +rfid+ " and localidade_id = "+localidade+";", null);
+        Cursor cursor = getDb().rawQuery("SELECT * FROM Inv_FS_Item_config WHERE inv_fs_ic_RFID = '" +rfid+ "' and inv_fs_ic_Id_Localidade = "+localidade+";", null);
         if(cursor.getCount() < 0) {
             return false;
         }

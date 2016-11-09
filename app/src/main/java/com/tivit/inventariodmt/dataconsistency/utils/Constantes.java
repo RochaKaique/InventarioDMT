@@ -19,7 +19,7 @@ public class Constantes {
     /**
      * URLs del Web Service
      */
-    public static final String GET_URL = IP + PUERTO_HOST + "/InventarioDMT_Ws/webresources/Equipamento/listar";
+    public static final String GET_URL = IP + PUERTO_HOST + "/InventarioDMT_Ws/webresources/Equipamento/listarPorLocalidade/";
     public static final String INSERT_URL = IP + PUERTO_HOST + "/InventarioDMT_Ws/webresources/Equipamento/cadastrar_equipamento";
 
     /**

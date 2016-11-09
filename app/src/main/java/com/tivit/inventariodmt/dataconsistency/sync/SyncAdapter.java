@@ -26,6 +26,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.tivit.inventariodmt.DownloadActivity;
 import com.tivit.inventariodmt.R;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
@@ -136,7 +137,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void realizarSincronizacionLocal(final SyncResult syncResult) {
         Log.i(TAG, "Actualizando el cliente.");
 
-        JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET,Constantes.GET_URL,
+        JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET,Constantes.GET_URL + DownloadActivity.idLocalidade,
             new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -614,8 +615,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         if (onlyUpload)
             bundle.putBoolean(ContentResolver.SYNC_EXTRAS_UPLOAD, true);
-        ContentResolver.requestSync(obtenerCuentaASincronizar(context),
-                context.getString(R.string.provider_authority), bundle);
+
+        ContentResolver.requestSync(obtenerCuentaASincronizar(context),context.getString(R.string.provider_authority), bundle);
     }
 
     public static Account obtenerCuentaASincronizar(Context context) {

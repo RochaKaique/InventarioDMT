@@ -69,7 +69,7 @@ public class FormEquipamentoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_equipamento);
-        this.combos = new PreencheCombosDao(this);
+            this.combos = new PreencheCombosDao(this);
 
 
         //Traz os combos

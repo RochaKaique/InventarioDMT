@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +30,7 @@ import java.util.TreeSet;
 import com.tivit.inventariodmt.dao.EquipamentoDAO;
 import com.tivit.inventariodmt.dao.GeradorPdf;
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
+import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
 
 public class ContagemActivity extends AppCompatActivity {
@@ -53,6 +56,21 @@ public class ContagemActivity extends AppCompatActivity {
     private List rfidValido;
     private List rfidInvalido;
     private Spinner localidade;
+
+
+    private static final String[] PROJECTION = new String[]{
+            EquipamentoContract.Columnas._ID,
+            EquipamentoContract.Columnas.ID_REMOTA,
+            EquipamentoContract.Columnas.N_SERIE,
+            EquipamentoContract.Columnas.PATRIMONIO,
+            EquipamentoContract.Columnas.RFID,
+            EquipamentoContract.Columnas.TIPO,
+            EquipamentoContract.Columnas.STATUS,
+            EquipamentoContract.Columnas.DEPARTAMENTO,
+            EquipamentoContract.Columnas.LOCALIDADE,
+            EquipamentoContract.Columnas.DATA,
+            EquipamentoContract.Columnas.ESTADO,
+    };
 
     ConnectionThreadContagem connect;
     private static boolean leitura = false;
@@ -148,7 +166,7 @@ public class ContagemActivity extends AppCompatActivity {
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (leitura == true) {
+            //if (leitura == true) {
                 Bundle bundle = msg.getData();
                 byte[] data = bundle.getByteArray("data");
                 String dataString = new String(data);
@@ -163,7 +181,7 @@ public class ContagemActivity extends AppCompatActivity {
                     //MUDAR
                     quantidadeEncontrada.setText("" + rfids.size());
                 }
-            }
+            //}
         }
     };
 
@@ -224,11 +242,19 @@ public class ContagemActivity extends AppCompatActivity {
     }
 
     public void verificarRfids() {
+        Uri uri = EquipamentoContract.CONTENT_URI;
+
         Iterator i = rfids.iterator();
         int loc = ((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade();
+
+        String selection = EquipamentoContract.Columnas.RFID + " = ? AND " + EquipamentoContract.Columnas.LOCALIDADE + "= ?";
+        String[] selectionArgs = new String[]{i.next().toString(), loc + ""};
+
+
         while (i.hasNext()) {
-            boolean existeRfid = equipamentoDAO.findByRfidInLocale("" + i.next(), loc);
-            if (existeRfid == true) {
+            //boolean existeRfid = equipamentoDAO.findByRfidInLocale("" + i.next(), loc);
+            Cursor c = getContentResolver().query(uri, PROJECTION, selection, selectionArgs, null);
+            if (c.getCount() > 0) {
                 rfidValido.add(i.next());
             } else {
                 rfidInvalido.add(i.next());
