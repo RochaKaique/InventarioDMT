@@ -204,7 +204,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         procesarRespuestaInsert(response, idLocal);
-                                        String where = "estado=?";
+                                        String where = "inv_fs_ic_EstadoSinc=?";
                                         String[] args = new String[] { "0" };
                                         resolver.delete(EquipamentoContract.CONTENT_URI,where,args);
                                     }
@@ -532,10 +532,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 //boolean b = String.valueOf(match.getInv_fs_ic_numero_serie()) != serie;
                 boolean b1 = match.getInv_fs_ic_numero_serie() != null && !match.getInv_fs_ic_numero_serie().equals(serie);
                 boolean b2 = match.getInv_fs_ic_Patrimonio() != null && !match.getInv_fs_ic_Patrimonio().equals(patrimonio);
-                boolean b3 = match.getTipo_equipamento_id() == tipo;
-                boolean b4 = match.getStatus_id() != status;
-                boolean b5 = match.getDepartamento_id() != departamento;
-                boolean b6 = match.getLocalidade_id() != localidade;
+                boolean b3 = match.getInv_fs_ic_Id_Tipo_Equipamento() == tipo;
+                boolean b4 = match.getInv_fs_ic_Id_Status() != status;
+                boolean b5 = match.getInv_fs_ic_Id_Departamento() != departamento;
+                boolean b6 = match.getInv_fs_ic_Id_Localidade() != localidade;
 //                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");ss
                 boolean b7 = match.getInv_fs_ic_Data_Criacao() != dataCriacao;
                 //boolean b8 = match.getEstado() != estado;
@@ -545,14 +545,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.i(TAG, "Programando atualização de: " + existingUri);
 
                     ops.add(ContentProviderOperation.newUpdate(existingUri)
-                            .withValue(EquipamentoContract.Columnas.N_SERIE, match.inv_fs_ic_numero_serie)
-                            .withValue(EquipamentoContract.Columnas.PATRIMONIO, match.inv_fs_ic_Patrimonio)
-                            .withValue(EquipamentoContract.Columnas.RFID, match.inv_fs_ic_RFID)
-                            .withValue(EquipamentoContract.Columnas.TIPO, match.tipo_equipamento_id)
-                            .withValue(EquipamentoContract.Columnas.STATUS, match.status_id)
-                            .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, match.departamento_id)
-                            .withValue(EquipamentoContract.Columnas.TIPO, match.localidade_id)
-                            .withValue(EquipamentoContract.Columnas.DATA, match.inv_fs_ic_Data_Criacao)
+                            .withValue(EquipamentoContract.Columnas.N_SERIE, match.getInv_fs_ic_numero_serie())
+                            .withValue(EquipamentoContract.Columnas.PATRIMONIO, match.getInv_fs_ic_Patrimonio())
+                            .withValue(EquipamentoContract.Columnas.RFID, match.getInv_fs_ic_RFID())
+                            .withValue(EquipamentoContract.Columnas.TIPO, match.getInv_fs_ic_Id_Tipo_Equipamento())
+                            .withValue(EquipamentoContract.Columnas.STATUS, match.getInv_fs_ic_Id_Status())
+                            .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, match.getInv_fs_ic_Id_Departamento())
+                            .withValue(EquipamentoContract.Columnas.TIPO, match.getInv_fs_ic_Id_Localidade())
+                            .withValue(EquipamentoContract.Columnas.DATA, match.getInv_fs_ic_Data_Criacao())
                             .build());
                     syncResult.stats.numUpdates++;
                 } else {
@@ -571,16 +571,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Insertar items resultantes
         for (EquipamentoDTO e : expenseMap.values()) {
-            Log.i(TAG, "Programando inserción de: " + e.get_id());
+            Log.i(TAG, "Programando inserción de: " + e.getInv_fs_ic_Id_IC());
             ops.add(ContentProviderOperation.newInsert(EquipamentoContract.CONTENT_URI)
-                    .withValue(EquipamentoContract.Columnas.N_SERIE, e.inv_fs_ic_numero_serie)
-                    .withValue(EquipamentoContract.Columnas.PATRIMONIO, e.inv_fs_ic_Patrimonio)
-                    .withValue(EquipamentoContract.Columnas.RFID, e.inv_fs_ic_RFID)
-                    .withValue(EquipamentoContract.Columnas.TIPO, e.tipo_equipamento_id)
-                    .withValue(EquipamentoContract.Columnas.STATUS, e.status_id)
-                    .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, e.departamento_id)
-                    .withValue(EquipamentoContract.Columnas.TIPO, e.localidade_id)
-                    .withValue(EquipamentoContract.Columnas.DATA, e.inv_fs_ic_Data_Criacao)
+                    .withValue(EquipamentoContract.Columnas.N_SERIE, e.getInv_fs_ic_numero_serie())
+                    .withValue(EquipamentoContract.Columnas.PATRIMONIO, e.getInv_fs_ic_Patrimonio())
+                    .withValue(EquipamentoContract.Columnas.RFID, e.getInv_fs_ic_RFID())
+                    .withValue(EquipamentoContract.Columnas.TIPO, e.getInv_fs_ic_Id_Tipo_Equipamento())
+                    .withValue(EquipamentoContract.Columnas.STATUS, e.getInv_fs_ic_Id_Status())
+                    .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, e.getInv_fs_ic_Id_Departamento())
+                    .withValue(EquipamentoContract.Columnas.TIPO, e.getInv_fs_ic_Id_Localidade())
+                    .withValue(EquipamentoContract.Columnas.DATA, e.getInv_fs_ic_Data_Criacao())
                     .build());
             syncResult.stats.numInserts++;
         }

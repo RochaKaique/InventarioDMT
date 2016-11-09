@@ -64,15 +64,14 @@ public class PreencheCombosDao {
 
     public List<LocalidadeDTO> listarLocalidades(){
         List<LocalidadeDTO> lL = new ArrayList<>();
-        Cursor cursor = getDb().rawQuery("SELECT _id, inv_FS_Loc_Endereco, Inv_FS_Loc_Descricao, Cidade_id FROM inv_FS_Localidade", null);
+        Cursor cursor = getDb().rawQuery("SELECT inv_FS_Loc_Id_Localidade, inv_FS_Loc_Endereco, Inv_FS_Loc_Descricao, inv_FS_Loc_cidade FROM inv_FS_Localidade", null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 LocalidadeDTO l = new LocalidadeDTO();
-                l.set_id(cursor.getInt(0));
+                l.setInv_FS_Loc_Id_Localidade(cursor.getInt(0));
                 l.setInv_FS_Loc_Endereco(cursor.getString(1));
                 l.setInv_FS_Loc_Descricao(cursor.getString(2));
-                l.setCidade_id(cursor.getInt(3));
 
                 lL.add(l);
 
@@ -101,13 +100,13 @@ public class PreencheCombosDao {
     public List<DepartamentoDTO> listarDepartamentos() {
         List<DepartamentoDTO> lD = new ArrayList<>();
 
-        Cursor cursor = getDb().rawQuery("SELECT _id, inv_FS_Dep_Nome_Departamento FROM inv_FS_Departamento", null);
+        Cursor cursor = getDb().rawQuery("SELECT inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento FROM inv_FS_Departamento", null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 DepartamentoDTO d = new DepartamentoDTO();
 
-                d.set_id(cursor.getInt(0));
+                d.setInv_FS_Dep_Id_Departamento(cursor.getInt(0));
                 d.setInv_FS_Dep_Nome_Departamento(cursor.getString(1));
                 lD.add(d);
 
@@ -139,7 +138,7 @@ public class PreencheCombosDao {
         if (cursor.getCount() > 0) {
             do {
                 TipoEquipamentoDTO e = new TipoEquipamentoDTO();
-                e.set_id(cursor.getInt(0));
+                e.setInv_FS_TP_Id_Tipo_Equipamento(cursor.getInt(0));
                 e.setInv_FS_TP_Nome_Equipamento(cursor.getString(1));
                 e.setInv_FS_TP_Kit_Instalacao(cursor.getInt(2));
                 e.setInv_FS_TP_Descricao(cursor.getString(3));
@@ -154,12 +153,12 @@ public class PreencheCombosDao {
     public List<StatusDTO> listarStatus() {
         List<StatusDTO> lS = new ArrayList<>();
 
-        Cursor cursor = getDb().rawQuery("SELECT _id, inv_FS_St_Nome_Status FROM inv_FS_Status", null);
+        Cursor cursor = getDb().rawQuery("SELECT inv_FS_St_id_Status, inv_FS_St_Nome_Status FROM inv_FS_Status", null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 StatusDTO stt = new StatusDTO();
-                stt.set_id(cursor.getInt(0));
+                stt.setInv_FS_St_id_Status(cursor.getInt(0));
                 stt.setInv_FS_St_Nome_Status(cursor.getString(1));
                 stt.setInv_FS_St_Descricao("");
 
@@ -173,12 +172,12 @@ public class PreencheCombosDao {
     public List<FabricanteDTO> listarFabricantes() {
         List<FabricanteDTO> lF = new ArrayList<>();
 
-        Cursor cursor = getDb().rawQuery("SELECT _id, inv_FS_Fab_Nome_Fabricante FROM inv_FS_Fabricante", null);
+        Cursor cursor = getDb().rawQuery("SELECT inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante FROM inv_FS_Fabricante", null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 FabricanteDTO f = new FabricanteDTO();
-                f.set_id(cursor.getInt(0));
+                f.setInv_FS_Fab_Id_Fabricante(cursor.getInt(0));
                 f.setInv_FS_Fab_Nome_Fabricante(cursor.getString(0));
             } while (cursor.moveToNext());
         }
@@ -204,12 +203,12 @@ public class PreencheCombosDao {
     public List<UsuarioDTO> listarUsuarios() {
         List<UsuarioDTO> lU = new ArrayList<>();
 
-        Cursor cursor = getDb().rawQuery("SELECT _id, inv_FS_usf_Nome FROM inv_FS_Usuario_Final", null);
+        Cursor cursor = getDb().rawQuery("SELECT inv_FS_usf_id_usuario, inv_FS_usf_Nome FROM inv_FS_Usuario_Final", null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 UsuarioDTO u = new UsuarioDTO();
-                u.setId(cursor.getInt(0));
+                u.setInv_fs_ic_Id_Organizacao(cursor.getInt(0));
                 u.setInv_FS_usf_Nome(cursor.getString(2));
 
             } while (cursor.moveToNext());

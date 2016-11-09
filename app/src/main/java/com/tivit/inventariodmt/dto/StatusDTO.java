@@ -5,16 +5,16 @@ package com.tivit.inventariodmt.dto;
  */
 
 public class StatusDTO {
-    private int _id;
+    private int inv_FS_St_id_Status;
     private String inv_FS_St_Nome_Status;
     private String inv_FS_St_Descricao;
 
-    public int get_id() {
-        return _id;
+    public int getInv_FS_St_id_Status() {
+        return inv_FS_St_id_Status;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setInv_FS_St_id_Status(int inv_FS_St_id_Status) {
+        this.inv_FS_St_id_Status = inv_FS_St_id_Status;
     }
 
     public String getInv_FS_St_Nome_Status() {

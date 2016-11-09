@@ -25,8 +25,8 @@ public class Constantes {
     /**
      * Campos de las respuestas Json
      */
-    public static final String ID_GASTO = "_id";
-    public static final String ESTADO = "estado";
+    public static final String ID_GASTO = "inv_fs_ic_Id_IC";
+    public static final String ESTADO = "inv_fs_ic_EstadoSinc";
     public static final String EQUIPAMENTOS = "equipamentos";
     public static final String MENSAJE = "mensagem";
 

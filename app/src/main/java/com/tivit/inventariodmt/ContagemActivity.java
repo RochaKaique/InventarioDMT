@@ -218,7 +218,7 @@ public class ContagemActivity extends AppCompatActivity {
 
     public void verificarRfids() {
         Iterator i = rfids.iterator();
-        int loc = ((LocalidadeDTO) localidade.getSelectedItem()).get_id();
+        int loc = ((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade();
         while (i.hasNext()) {
             boolean existeRfid = equipamentoDAO.findByRfidInLocale("" + i.next(), loc);
             if (existeRfid == true) {

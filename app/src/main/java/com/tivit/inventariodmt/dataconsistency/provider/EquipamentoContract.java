@@ -35,18 +35,19 @@ public class EquipamentoContract {
 
     public static class Columnas implements BaseColumns {
 
+        public final static String _ID = "inv_fs_ic_Id_IC";
         public final static String N_SERIE =  "inv_fs_ic_numero_serie";
         public final static String PATRIMONIO = "inv_fs_ic_Patrimonio";
         public final static String RFID = "inv_fs_ic_RFID";
-        public final static String TIPO = "tipo_equipamento_id";
-        public final static String STATUS = "status_id";
-        public final static String DEPARTAMENTO = "departamento_id";
-        public final static String LOCALIDADE = "localidade_id";
+        public final static String TIPO = "inv_fs_ic_Id_Tipo_Equipamento";
+        public final static String STATUS = "inv_fs_ic_Id_Status";
+        public final static String DEPARTAMENTO = "inv_fs_ic_Id_Departamento";
+        public final static String LOCALIDADE = "inv_fs_ic_Id_Localidade";
         public static final String DATA = "inv_fs_ic_Data_Criacao";
 
-        public static final String ESTADO = "estado";
-        public static final String ID_REMOTA = "idRemoto";
-        public final static String INSERT_PENDING = "insert_pending";
+        public static final String ESTADO = "inv_fs_ic_EstadoSinc";
+        public static final String ID_REMOTA = "inv_fs_ic_idRemoto";
+        public final static String INSERT_PENDING = "inv_fs_ic_insert_pending";
 
     }
 }

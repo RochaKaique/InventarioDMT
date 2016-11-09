@@ -115,14 +115,14 @@ public class FormEquipamentoActivity extends AppCompatActivity {
             values.put("inv_fs_ic_RFID", recebeRfid.getText().toString().trim());
             values.put("inv_fs_ic_Data_Criacao", "" + dataAgora.getTime());
             //
-            int codigoTipoEquipamento = ((TipoEquipamentoDTO) tipoEquipamento.getSelectedItem()).get_id();
-            values.put("tipo_equipamento_id", "" + codigoTipoEquipamento);
-            int codigoStatus = ((StatusDTO) status.getSelectedItem()).get_id();
-            values.put("status_id", "" + codigoStatus);
-            int codigoDepartamento = ((DepartamentoDTO) departamento.getSelectedItem()).get_id();
-            values.put("departamento_id", "" + codigoDepartamento);
-            int codigoLocalidade = ((TipoEquipamentoDTO) tipoEquipamento.getSelectedItem()). get_id();
-            values.put("localidade_id", +codigoLocalidade);
+            int codigoTipoEquipamento = ((TipoEquipamentoDTO) tipoEquipamento.getSelectedItem()).getInv_FS_TP_Id_Tipo_Equipamento();
+            values.put("inv_fs_ic_Id_Tipo_Equipamento", "" + codigoTipoEquipamento);
+            int codigoStatus = ((StatusDTO) status.getSelectedItem()).getInv_FS_St_id_Status();
+            values.put("inv_fs_ic_Id_Status", "" + codigoStatus);
+            int codigoDepartamento = ((DepartamentoDTO) departamento.getSelectedItem()).getInv_FS_Dep_Id_Departamento();
+            values.put("inv_fs_ic_Id_Departamento", "" + codigoDepartamento);
+            int codigoLocalidade = ((TipoEquipamentoDTO) tipoEquipamento.getSelectedItem()). getInv_FS_TP_Id_Tipo_Equipamento();
+            values.put("inv_fs_ic_Id_Localidade", +codigoLocalidade);
             values.put(EquipamentoContract.Columnas.INSERT_PENDING, 1);
 
             AlertDialog.Builder msg = new AlertDialog.Builder(this);

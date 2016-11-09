@@ -5,17 +5,25 @@ package com.tivit.inventariodmt.dto;
  */
 
 public class DepartamentoDTO {
-    private int _id;
+    private int inv_FS_Dep_Id_Departamento;
     private String inv_FS_Dep_Nome_Departamento;
     private String inv_FS_Dep_Descricao;
-    private int organizacao_id;
+    private int inv_fs_ic_Id_Organizacao;
 
-    public int get_id() {
-        return _id;
+    public int getInv_FS_Dep_Id_Departamento() {
+        return inv_FS_Dep_Id_Departamento;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setInv_FS_Dep_Id_Departamento(int inv_FS_Dep_Id_Departamento) {
+        this.inv_FS_Dep_Id_Departamento = inv_FS_Dep_Id_Departamento;
+    }
+
+    public int getInv_fs_ic_Id_Organizacao() {
+        return inv_fs_ic_Id_Organizacao;
+    }
+
+    public void setInv_fs_ic_Id_Organizacao(int inv_fs_ic_Id_Organizacao) {
+        this.inv_fs_ic_Id_Organizacao = inv_fs_ic_Id_Organizacao;
     }
 
     public String getInv_FS_Dep_Nome_Departamento() {
@@ -34,13 +42,6 @@ public class DepartamentoDTO {
         this.inv_FS_Dep_Descricao = inv_FS_Dep_Descricao;
     }
 
-    public int getOrganizacao_id() {
-        return organizacao_id;
-    }
-
-    public void setOrganizacao_id(int organizacao_id) {
-        this.organizacao_id = organizacao_id;
-    }
 
 
     @Override

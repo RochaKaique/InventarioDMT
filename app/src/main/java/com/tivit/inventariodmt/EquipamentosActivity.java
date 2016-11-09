@@ -40,8 +40,8 @@ public class EquipamentosActivity extends ListActivity {
 
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT _id, inv_fs_ic_numero_serie, inv_fs_ic_Patrimonio, inv_fs_ic_Data_Criacao, tipo_equipamento_id, inv_fs_ic_RFID, estado, insert_pending," +
-                " idRemoto FROM Inv_FS_Item_config", null);
+        Cursor cursor = db.rawQuery("SELECT inv_fs_ic_Id_IC, inv_fs_ic_numero_serie, inv_fs_ic_Patrimonio, inv_fs_ic_Data_Criacao, inv_fs_ic_Id_Tipo_Equipamento, inv_fs_ic_RFID, inv_fs_ic_EstadoSinc, inv_fs_ic_insert_pending," +
+                " inv_fs_ic_idRemoto FROM Inv_FS_Item_config", null);
         cursor.moveToFirst();
 
         for(int i = 0; i < cursor.getCount(); i++) {

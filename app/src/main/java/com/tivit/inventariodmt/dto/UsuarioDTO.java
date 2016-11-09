@@ -7,7 +7,7 @@ import java.util.Date;
  */
 
 public class UsuarioDTO {
-    private int id;
+    private int inv_FS_usf_id_usuario;
     private String inv_FS_usf_Nome;
     private String inv_FS_usf_Id_Corporativo;
     private int inv_FS_usf_Status;
@@ -23,17 +23,17 @@ public class UsuarioDTO {
     private String inv_FS_usf_Nome_Gestor;
     private String inv_FS_usf_Ramal_Gestor;
     private String inv_FS_usf_Observacao;
-    private int organizacao_id;
-    private int departamento_id;
-    private int localidade_id;
-    private int centro_custo_id;
+    private int inv_fs_ic_Id_Organizacao;
+    private int inv_fs_ic_Id_Departamento;
+    private int inv_fs_ic_Id_Localidade;
+    private int inv_FS_usf_Id_Centro_Custo;
 
-    public int getId() {
-        return id;
+    public int getInv_FS_usf_id_usuario() {
+        return inv_FS_usf_id_usuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setInv_FS_usf_id_usuario(int inv_FS_usf_id_usuario) {
+        this.inv_FS_usf_id_usuario = inv_FS_usf_id_usuario;
     }
 
     public String getInv_FS_usf_Nome() {
@@ -156,36 +156,36 @@ public class UsuarioDTO {
         this.inv_FS_usf_Observacao = inv_FS_usf_Observacao;
     }
 
-    public int getOrganizacao_id() {
-        return organizacao_id;
+    public int getInv_fs_ic_Id_Organizacao() {
+        return inv_fs_ic_Id_Organizacao;
     }
 
-    public void setOrganizacao_id(int organizacao_id) {
-        this.organizacao_id = organizacao_id;
+    public void setInv_fs_ic_Id_Organizacao(int inv_fs_ic_Id_Organizacao) {
+        this.inv_fs_ic_Id_Organizacao = inv_fs_ic_Id_Organizacao;
     }
 
-    public int getDepartamento_id() {
-        return departamento_id;
+    public int getInv_fs_ic_Id_Departamento() {
+        return inv_fs_ic_Id_Departamento;
     }
 
-    public void setDepartamento_id(int departamento_id) {
-        this.departamento_id = departamento_id;
+    public void setInv_fs_ic_Id_Departamento(int inv_fs_ic_Id_Departamento) {
+        this.inv_fs_ic_Id_Departamento = inv_fs_ic_Id_Departamento;
     }
 
-    public int getLocalidade_id() {
-        return localidade_id;
+    public int getInv_fs_ic_Id_Localidade() {
+        return inv_fs_ic_Id_Localidade;
     }
 
-    public void setLocalidade_id(int localidade_id) {
-        this.localidade_id = localidade_id;
+    public void setInv_fs_ic_Id_Localidade(int inv_fs_ic_Id_Localidade) {
+        this.inv_fs_ic_Id_Localidade = inv_fs_ic_Id_Localidade;
     }
 
-    public int getCentro_custo_id() {
-        return centro_custo_id;
+    public int getInv_FS_usf_Id_Centro_Custo() {
+        return inv_FS_usf_Id_Centro_Custo;
     }
 
-    public void setCentro_custo_id(int centro_custo_id) {
-        this.centro_custo_id = centro_custo_id;
+    public void setInv_FS_usf_Id_Centro_Custo(int inv_FS_usf_Id_Centro_Custo) {
+        this.inv_FS_usf_Id_Centro_Custo = inv_FS_usf_Id_Centro_Custo;
     }
 
     @Override

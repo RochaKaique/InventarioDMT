@@ -5,16 +5,16 @@ package com.tivit.inventariodmt.dto;
  */
 
 public class FabricanteDTO {
-    private int _id;
+    private int inv_FS_Fab_Id_Fabricante;
     private String inv_FS_Fab_Nome_Fabricante;
     private String inv_FS_Fab_Descricao;
 
-    public int get_id() {
-        return _id;
+    public int getInv_FS_Fab_Id_Fabricante() {
+        return inv_FS_Fab_Id_Fabricante;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setInv_FS_Fab_Id_Fabricante(int inv_FS_Fab_Id_Fabricante) {
+        this.inv_FS_Fab_Id_Fabricante = inv_FS_Fab_Id_Fabricante;
     }
 
     public String getInv_FS_Fab_Nome_Fabricante() {

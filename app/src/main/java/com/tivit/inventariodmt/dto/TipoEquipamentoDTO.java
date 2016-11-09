@@ -5,17 +5,17 @@ package com.tivit.inventariodmt.dto;
  */
 
 public class TipoEquipamentoDTO {
-    private int _id;
+    private int inv_FS_TP_Id_Tipo_Equipamento;
     private String inv_FS_TP_Nome_Equipamento;
     private int inv_FS_TP_Kit_Instalacao;
     private String inv_FS_TP_Descricao;
 
-    public int get_id() {
-        return _id;
+    public int getInv_FS_TP_Id_Tipo_Equipamento() {
+        return inv_FS_TP_Id_Tipo_Equipamento;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setInv_FS_TP_Id_Tipo_Equipamento(int inv_FS_TP_Id_Tipo_Equipamento) {
+        this.inv_FS_TP_Id_Tipo_Equipamento = inv_FS_TP_Id_Tipo_Equipamento;
     }
 
     public String getInv_FS_TP_Nome_Equipamento() {
