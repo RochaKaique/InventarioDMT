@@ -41,7 +41,8 @@
                 android:id="@+id/button2"
 
                 android:onClick="abreAteste"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:visibility="visible">
 
             </Button>
 

@@ -17,12 +17,10 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
@@ -30,38 +28,34 @@ import com.tivit.inventariodmt.DownloadActivity;
 import com.tivit.inventariodmt.R;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
+import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dataconsistency.utils.Constantes;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 import com.tivit.inventariodmt.dataconsistency.web.VolleySingleton;
 import com.tivit.inventariodmt.dto.EquipamentoDTO;
+import com.tivit.inventariodmt.dto.LocalidadeDTO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kaique.rocha on 27/10/2016.
  */
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
-    
-    private static final String TAG = SyncAdapter.class.getSimpleName();
 
+    private static final String TAG = SyncAdapter.class.getSimpleName();
+    public static int tabelaASincronizar = -1;
     ContentResolver resolver;
+    //LocalidadeProvider resolverL;
     private Gson gson = new Gson();
-    
+
     private static final String[] PROJECTION = new String[]{
             EquipamentoContract.Columnas._ID,
             EquipamentoContract.Columnas.ID_REMOTA,
@@ -74,6 +68,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             EquipamentoContract.Columnas.LOCALIDADE,
             EquipamentoContract.Columnas.DATA,
             EquipamentoContract.Columnas.ESTADO,
+    };
+
+    private static final String[] LOCALIDADE_PROJECTION = new String[]{
+            LocalidadeContract.Colunas._ID,
+            LocalidadeContract.Colunas.CEP,
+            LocalidadeContract.Colunas.CIDADE,
+            LocalidadeContract.Colunas.DESCRICAO,
+            LocalidadeContract.Colunas.ENDERECO,
+            LocalidadeContract.Colunas.ESTADO,
+            LocalidadeContract.Colunas.ESTADO_SINC,
+            LocalidadeContract.Colunas.ID_REMOTA,
+            LocalidadeContract.Colunas.INSERT_PENDING,
+            LocalidadeContract.Colunas.NOME,
     };
 
     public static final int COLUNA_ID = 0;
@@ -126,36 +133,50 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(TAG, "onPerformSync()...");
 
         boolean apenasSubida = extras.getBoolean(ContentResolver.SYNC_EXTRAS_UPLOAD, false);
-
-        if (!apenasSubida) {
-            realizarSincronizacionLocal(syncResult);
-        } else {
-            realizarSincronizacionRemota();
+        switch (tabelaASincronizar) {
+            case 1:
+                if (!apenasSubida) {
+                    realizarSincronizacionLocal(syncResult);
+                } else {
+                    realizarSincronizacionRemota();
+                }
+            break;
+            case 2:
+                downloadLocaidades(syncResult);
+                break;
         }
     }
 
     private void realizarSincronizacionLocal(final SyncResult syncResult) {
         Log.i(TAG, "Actualizando el cliente.");
+        final boolean[] retorno = new boolean[1];
+        try {
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_URL + DownloadActivity.idLocalidade,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            procesarRespuestaGet(response, syncResult);
 
-        JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET,Constantes.GET_URL + DownloadActivity.idLocalidade,
-            new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    procesarRespuestaGet(response, syncResult);
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, error.toString());
-                }
-            }
-        );
-        jr.setRetryPolicy(new DefaultRetryPolicy(3000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(TAG, error.toString());
 
+                        }
+                    }
+            );
+            jr.setRetryPolicy(new DefaultRetryPolicy(3000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.toString());
+
+        }
     }
     /**
      * Procesa la respuesta del servidor al pedir que se retornen todos los gastos.
@@ -183,6 +204,61 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
         }
     }
+
+    //SINCRONIZAÇÃO DE LOCALIDADE
+
+    private void downloadLocaidades(final SyncResult syncResult) {
+        Log.i(TAG, "Atualizando.");
+        try {
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_LOCALIDADE,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            procesarRespostaGetLocalidade(response, syncResult);
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(TAG, error.toString());
+
+                        }
+                    }
+            );
+            jr.setRetryPolicy(new DefaultRetryPolicy(6000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.toString());
+
+        }
+    }
+
+    private void procesarRespostaGetLocalidade(JSONArray response, SyncResult syncResult) {
+        try {
+            // Obtener atributo "estado"
+            JSONObject rObject = (JSONObject) response.get(0);
+            String estado = rObject.getString(Constantes.ESTADO_LOCALIDADE);
+            atualizarLocalidade(response, syncResult);
+//            switch (estado) {
+//                case Constantes.SUCCESS: // EXITO
+//                    actualizarDatosLocales(response, syncResult);
+//                    break;
+//                case Constantes.FAILED: // FALLIDO
+//                    String mensaje = rObject.getString(Constantes.MENSAJE);
+//                    Log.i(TAG, mensaje);
+//                    break;
+//            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void realizarSincronizacionRemota() {
         Log.i(TAG, "Atualizando o servidor...");
 
@@ -200,7 +276,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     JsonObjectRequest jr = new JsonObjectRequest(
                                 Request.Method.POST,
                                 Constantes.INSERT_URL,
-                                Utilidades.deCursorAJSONObject(c),
+                                Utilidades.deCursorAJSONObjectEquipamento(c),
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
@@ -510,14 +586,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         while (c.moveToNext()) {
             syncResult.stats.numEntries++;
 
-            id = c.getInt(COLUNA_ID_REMOTA);
-            serie = c.getString(COLUNA_N_SERIE);
-            patrimonio = c.getString(COLUNA_PATRIMONIO);
-            tipo = c.getInt(COLUNA_TIPO);
-            status= c.getInt(COLUNA_STATUS);
-            departamento = c.getInt(COLUNA_DEPARTAMENTO);
-            localidade = c.getInt(COLUNA_LOCALIDADE);
-            dataCriacao = c.getLong(COLUNA_DATA);
+            id = c.getInt(c.getColumnIndex(EquipamentoContract.Columnas._ID));
+            serie = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.N_SERIE));
+            patrimonio = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.PATRIMONIO));
+            tipo = c.getInt(5);
+            status= c.getInt(c.getColumnIndex(EquipamentoContract.Columnas.STATUS));
+            departamento = c.getInt(c.getColumnIndex(EquipamentoContract.Columnas.DEPARTAMENTO));
+            localidade = c.getInt(c.getColumnIndex(EquipamentoContract.Columnas.LOCALIDADE));
+            dataCriacao = c.getLong(c.getColumnIndex(EquipamentoContract.Columnas.DATA));
             //estado = c.getInt(COLUNA_ESTADO);
 
             EquipamentoDTO match = expenseMap.get(serie);
@@ -552,7 +628,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             .withValue(EquipamentoContract.Columnas.TIPO, match.getInv_fs_ic_Id_Tipo_Equipamento())
                             .withValue(EquipamentoContract.Columnas.STATUS, match.getInv_fs_ic_Id_Status())
                             .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, match.getInv_fs_ic_Id_Departamento())
-                            .withValue(EquipamentoContract.Columnas.TIPO, match.getInv_fs_ic_Id_Localidade())
                             .withValue(EquipamentoContract.Columnas.DATA, match.getInv_fs_ic_Data_Criacao())
                             .build());
                     syncResult.stats.numUpdates++;
@@ -580,7 +655,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     .withValue(EquipamentoContract.Columnas.TIPO, e.getInv_fs_ic_Id_Tipo_Equipamento())
                     .withValue(EquipamentoContract.Columnas.STATUS, e.getInv_fs_ic_Id_Status())
                     .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, e.getInv_fs_ic_Id_Departamento())
-                    .withValue(EquipamentoContract.Columnas.TIPO, e.getInv_fs_ic_Id_Localidade())
                     .withValue(EquipamentoContract.Columnas.DATA, e.getInv_fs_ic_Data_Criacao())
                     .build());
             syncResult.stats.numInserts++;
@@ -607,15 +681,60 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
+    private void atualizarLocalidade(JSONArray response, SyncResult syncResult) {
 
-    public static void sincronizarAhora(Context context, boolean onlyUpload) {
+        LocalidadeDTO[] res = gson.fromJson(response != null ? response.toString() : null, LocalidadeDTO[].class);
+        List<LocalidadeDTO> data = Arrays.asList(res);
+
+        Gson gson = new Gson();
+        Log.i(TAG, gson.toJson(data));
+
+        HashMap<String, LocalidadeDTO> expenseMap = new HashMap<String, LocalidadeDTO>();
+        for (LocalidadeDTO l : data) {
+            expenseMap.put(String.valueOf(l.getInv_FS_Loc_Id_Localidade()), l);
+        }
+
+
+        for (LocalidadeDTO l : expenseMap.values()) {
+            ContentValues values = new ContentValues();
+            values.put(LocalidadeContract.Colunas._ID, l.getInv_FS_Loc_Id_Localidade());
+            values.put(LocalidadeContract.Colunas.CEP, l.getInv_FS_Loc_cep());
+            values.put(LocalidadeContract.Colunas.CIDADE, l.getInv_FS_Loc_cidade());
+            values.put(LocalidadeContract.Colunas.DESCRICAO, l.getInv_FS_Loc_Descricao());
+            values.put(LocalidadeContract.Colunas.ENDERECO, l.getInv_FS_Loc_Endereco());
+            values.put(LocalidadeContract.Colunas.ESTADO, l.getInv_FS_Loc_estado());
+            values.put(LocalidadeContract.Colunas.CIDADE, l.getInv_FS_Loc_cidade());
+            values.put(LocalidadeContract.Colunas.NOME, l.getInv_FS_Loc_nome_localidade());
+            syncResult.stats.numInserts++;
+            getDb().insert(LocalidadeContract.LOCALIDADE,null,values);
+        }
+
+        if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+            Log.i(TAG, "Aplicando operações...");
+//            try {
+//
+//                //resolver.applyBatch(LocalidadeContract.AUTHORITY, ops);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+            resolver.notifyChange(LocalidadeContract.CONTENT_URI,null,false);
+            Log.i(TAG, "Sincronização finalizada.");
+
+        } else {
+            Log.i(TAG, "Não foi necessário sincronizar");
+        }
+
+    }
+
+
+    public static void sincronizarAhora(Context context, boolean onlyUpload, int tabela) {
         Log.i(TAG, "Realizando pedido de sincronização manual.");
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         if (onlyUpload)
             bundle.putBoolean(ContentResolver.SYNC_EXTRAS_UPLOAD, true);
-
+        tabelaASincronizar = tabela;
         ContentResolver.requestSync(obtenerCuentaASincronizar(context),context.getString(R.string.provider_authority), bundle);
     }
 

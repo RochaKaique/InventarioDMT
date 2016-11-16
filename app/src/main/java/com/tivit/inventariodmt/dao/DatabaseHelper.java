@@ -160,12 +160,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_Lt_Sequencia_Lote INTEGER);");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Localidade(" +
-                "inv_FS_Loc_Id_Localidade INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_Loc_Id_Localidade INTEGER PRIMARY KEY, " +
                 "inv_FS_Loc_Endereco TEXT," +
                 "inv_FS_Loc_Descricao TEXT," +
                 "inv_FS_Loc_cep TEXT," +
                 "inv_FS_Loc_cidade TEXT," +
                 "inv_FS_Loc_estado TEXT," +
+                "inv_fs_Loc_EstadoSinc INTEGER," +
                 "inv_FS_Loc_nome_localidade TEXT);");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Organizacao(" +
@@ -327,9 +328,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Cidade(inv_FS_Cid_Nome, estado_id) VALUES ('São Paulo', 1)");
 
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('CENESP', 'São Paulo')");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('Ipiranga', 'São Paulo')");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('Transamerica', 'São Paulo')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('CENESP', 'São Paulo')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('Ipiranga', 'São Paulo')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('Transamerica', 'São Paulo')");
 
 
 

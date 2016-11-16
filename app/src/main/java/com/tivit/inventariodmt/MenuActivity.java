@@ -2,30 +2,27 @@ package com.tivit.inventariodmt;
 
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 import com.tivit.inventariodmt.util.ConexaoInternet;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements Runnable{
 
     private BluetoothAdapter blueAdapter;
     private TextView verificaBluetooth, cadastrarEquipamento, contagem;
-    //private Button cadastrarEquipamento;
+    SharedPreferences sPreferences = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +48,43 @@ public class MenuActivity extends AppCompatActivity {
         } else {
             if (!blueAdapter.isEnabled()) {
                 blueAdapter.enable();
+            }
+        }
+
+        sPreferences = getSharedPreferences("firstRun", MODE_PRIVATE);
+        Handler handler = new Handler();
+        handler.post(this);
+
+    }
+
+    public void run(){
+        if (sPreferences.getBoolean("firstRun", true)) {
+            SyncAdapter.sincronizarAhora(getApplicationContext(), false, 2);
+            if (Utilidades.isConnected(getApplicationContext())) {
+                AlertDialog.Builder msg = new AlertDialog.Builder(this);
+                //SyncAdapter.sincronizarAhora(getApplicationContext(),false,2);
+                msg.setTitle("Bem Vindo!");
+                msg.setMessage("Bem Vindo ao APP Inventario!\nPara a Realização do Inventário Selecione a Localidade que Deseja Inventariar\nEsse Processo Deve Ser Feito Toda Vez que Você for Inventariar uma Localidade Diferente");
+                msg.setNeutralButton("OK",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        sPreferences.edit().putBoolean("firstRun", false).apply();
+                        startActivity(new Intent(getApplicationContext(), DownloadActivity.class));
+                    }
+                });
+                msg.show();
+            } else {
+                AlertDialog.Builder msg = new AlertDialog.Builder(this);
+                msg.setTitle("Verifique A Conexão");
+                msg.setMessage("Você Necessita de Conexão à Internet na Primeira Execução!");
+                msg.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MenuActivity.super.finish();
+                        System.exit(0);
+                    }
+                });
+                msg.show();
             }
         }
     }
@@ -97,7 +131,7 @@ public class MenuActivity extends AppCompatActivity {
                     msg.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            SyncAdapter.sincronizarAhora(getApplicationContext(), true);
+                            SyncAdapter.sincronizarAhora(getApplicationContext(), true, 1);
                         }
                     });
                     msg.show();

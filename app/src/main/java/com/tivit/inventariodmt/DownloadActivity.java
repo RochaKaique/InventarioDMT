@@ -3,7 +3,6 @@ package com.tivit.inventariodmt;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -17,6 +16,7 @@ public class DownloadActivity extends AppCompatActivity {
     PreencheCombosDao combos;
     private Spinner localidade;
     public static String idLocalidade;
+    public static boolean isSinc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,15 +32,14 @@ public class DownloadActivity extends AppCompatActivity {
 //
 //        txtResultado.setText("Download Realizado");
 //        txtResultado.setTextColor(Color.RED);
-        try{
-            idLocalidade = String.valueOf(((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade());
-            SyncAdapter.sincronizarAhora(getApplicationContext(), false);
-            TextView txtResultado = (TextView) findViewById(R.id.tvResultado);
-            txtResultado.setText("Download Realizado");
-            txtResultado.setTextColor(Color.GREEN);
-        }catch(Exception ex){
-            Log.e("Download", "Erro ao Baixar o dados da localidade");
-        }
+
+        idLocalidade = String.valueOf(((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade());
+        SyncAdapter.sincronizarAhora(getApplicationContext(), false, 1);
+        TextView txtResultado = (TextView) findViewById(R.id.tvResultado);
+        txtResultado.setText("Download Realizado");
+        txtResultado.setTextColor(Color.GREEN);
+
+
     }
 
     public void comboLocalidade() {

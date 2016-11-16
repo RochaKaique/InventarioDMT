@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tivit.inventariodmt.dao.DatabaseHelper;
+import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 
 public class EquipamentosActivity extends ListActivity {
 
@@ -47,15 +48,15 @@ public class EquipamentosActivity extends ListActivity {
         for(int i = 0; i < cursor.getCount(); i++) {
             Map<String, Object> item = new HashMap<>();
 
-            String id = cursor.getString(0);
-            String numeroSerie = cursor.getString(1);
-            String patrimonio = cursor.getString(2);
-            long dataCriacao = cursor.getLong(3);
-            String tipoEquipamento = cursor.getString(4);
-            String rfid = cursor.getString(5);
-            int estado = cursor.getInt(6);
-            int pending = cursor.getInt(7);
-            int remoto =  cursor.getInt(8);
+            String id = cursor.getString(cursor.getColumnIndex(EquipamentoContract.Columnas._ID));
+            String numeroSerie = cursor.getString(cursor.getColumnIndex(EquipamentoContract.Columnas.N_SERIE));
+            String patrimonio = cursor.getString(cursor.getColumnIndex(EquipamentoContract.Columnas.PATRIMONIO));
+            long dataCriacao = cursor.getLong(cursor.getColumnIndex(EquipamentoContract.Columnas.DATA));
+            String tipoEquipamento = cursor.getString(cursor.getColumnIndex(EquipamentoContract.Columnas.TIPO));
+            String rfid = cursor.getString(cursor.getColumnIndex(EquipamentoContract.Columnas.RFID));
+            int estado = cursor.getInt(cursor.getColumnIndex(EquipamentoContract.Columnas.ESTADO));
+            int pending = cursor.getInt(cursor.getColumnIndex(EquipamentoContract.Columnas.INSERT_PENDING));
+            int remoto =  cursor.getInt(cursor.getColumnIndex(EquipamentoContract.Columnas.ID_REMOTA));
 
             AlertDialog.Builder msg = new AlertDialog.Builder(this);
             msg.setMessage("Série = "+numeroSerie+" Código = "+id+" Estado = " +estado+ " Pending = "+pending + "Remota =" + remoto);

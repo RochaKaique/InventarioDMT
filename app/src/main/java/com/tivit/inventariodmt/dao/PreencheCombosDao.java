@@ -1,12 +1,15 @@
 package com.tivit.inventariodmt.dao;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
@@ -28,6 +31,20 @@ public class PreencheCombosDao {
     private List<String> usuarios;
     private List<String> departamentos;
     private SQLiteDatabase db;
+    ContentResolver resolver;
+
+    private static final String[] LOCALIDADE_PROJECTION = new String[]{
+            LocalidadeContract.Colunas._ID,
+            LocalidadeContract.Colunas.CEP,
+            LocalidadeContract.Colunas.CIDADE,
+            LocalidadeContract.Colunas.DESCRICAO,
+            LocalidadeContract.Colunas.ENDERECO,
+            LocalidadeContract.Colunas.ESTADO,
+            LocalidadeContract.Colunas.ESTADO_SINC,
+            LocalidadeContract.Colunas.ID_REMOTA,
+            LocalidadeContract.Colunas.INSERT_PENDING,
+            LocalidadeContract.Colunas.NOME,
+    };
 
     public PreencheCombosDao(Context context) {
         helper = new DatabaseHelper(context);
@@ -63,8 +80,13 @@ public class PreencheCombosDao {
     }*/
 
     public List<LocalidadeDTO> listarLocalidades(){
+        Uri uri = LocalidadeContract.CONTENT_URI;
         List<LocalidadeDTO> lL = new ArrayList<>();
+        String select = LocalidadeContract.Colunas._ID + " >=?";
+        String[] sqlArgs = new String[]{"-1"};
         Cursor cursor = getDb().rawQuery("SELECT inv_FS_Loc_Id_Localidade, inv_FS_Loc_Endereco, Inv_FS_Loc_Descricao, inv_FS_Loc_cidade FROM inv_FS_Localidade", null);
+        //Cursor cursor = resolver.query(uri,LOCALIDADE_PROJECTION,select,null,null);
+        assert cursor != null;
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {

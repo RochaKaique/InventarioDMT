@@ -26,7 +26,7 @@ public class EquipamentoProvider extends ContentProvider {
 
     private static final int DATABASE_VERSION_NEW = 1;
 
-    private ContentResolver resolver;
+    public ContentResolver resolver;
 
     private DatabaseHelper databaseHelper;
 

@@ -252,7 +252,6 @@ public class ContagemActivity extends AppCompatActivity {
 
 
         while (i.hasNext()) {
-            //boolean existeRfid = equipamentoDAO.findByRfidInLocale("" + i.next(), loc);
             Cursor c = getContentResolver().query(uri, PROJECTION, selection, selectionArgs, null);
             if (c.getCount() > 0) {
                 rfidValido.add(i.next());

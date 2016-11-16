@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +30,6 @@ import java.util.List;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
-import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
@@ -121,7 +119,7 @@ public class FormEquipamentoActivity extends AppCompatActivity {
             values.put("inv_fs_ic_Id_Status", "" + codigoStatus);
             int codigoDepartamento = ((DepartamentoDTO) departamento.getSelectedItem()).getInv_FS_Dep_Id_Departamento();
             values.put("inv_fs_ic_Id_Departamento", "" + codigoDepartamento);
-            int codigoLocalidade = ((TipoEquipamentoDTO) tipoEquipamento.getSelectedItem()). getInv_FS_TP_Id_Tipo_Equipamento();
+            int codigoLocalidade = ((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade();
             values.put("inv_fs_ic_Id_Localidade", +codigoLocalidade);
             values.put(EquipamentoContract.Columnas.INSERT_PENDING, 1);
 

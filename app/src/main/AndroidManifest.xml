@@ -28,11 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".MenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".DiscoveredDevices"
@@ -52,6 +52,15 @@
         <activity
             android:name=".ContagemActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ApresentacaoActivity"
+            android:screenOrientation="portrait">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
 
         <!-- SERVICIO DE AUTENTICACIÓN -->
         <service android:name=".dataconsistency.sync.AuthenticationService">
@@ -81,7 +90,8 @@
             android:name=".dataconsistency.provider.EquipamentoProvider"
             android:authorities="com.tivit.inventariodmt"
             android:exported="false"
-            android:syncable="true" />
+            android:syncable="true"></provider>
+
 
         <activity android:name=".TestActivity" />
         <activity android:name=".DownloadActivity"></activity>

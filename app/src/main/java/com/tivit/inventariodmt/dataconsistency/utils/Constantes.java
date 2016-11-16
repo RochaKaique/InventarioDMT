@@ -9,18 +9,20 @@ public class Constantes {
      * Puerto que utilizas para la conexión.
      * Dejalo en blanco si no has configurado esta característica.
      */
-    private static final String PUERTO_HOST = ":8084";
+    private static final String PORTA = ":8084";
 
     /**
      * Dirección IP de genymotion o AVD
      */
-    private static final String IP = "http://192.168.49.213";
+    private static final String IP = "http://192.168.137.1";
 
     /**
      * URLs del Web Service
      */
-    public static final String GET_URL = IP + PUERTO_HOST + "/InventarioDMT_Ws/webresources/Equipamento/listarPorLocalidade/";
-    public static final String INSERT_URL = IP + PUERTO_HOST + "/InventarioDMT_Ws/webresources/Equipamento/cadastrar_equipamento";
+    public static final String GET_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/Equipamento/listarPorLocalidade/";
+    public static final String INSERT_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/Equipamento/cadastrar_equipamento";
+
+    public static final String GET_LOCALIDADE = IP + PORTA + "/InventarioDMT_Ws/webresources/localidade/listar";
 
     /**
      * Campos de las respuestas Json
@@ -30,9 +32,9 @@ public class Constantes {
     public static final String EQUIPAMENTOS = "equipamentos";
     public static final String MENSAJE = "mensagem";
 
-    /**
-     * Códigos del campo {@link ESTADO}
-     */
+    public static final String ESTADO_LOCALIDADE = "inv_fs_Loc_EstadoSinc";
+
+
     public static final String SUCCESS = "1";
     public static final String FAILED = "2";
 

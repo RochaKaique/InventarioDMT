@@ -8,7 +8,8 @@ public class DepartamentoDTO {
     private int inv_FS_Dep_Id_Departamento;
     private String inv_FS_Dep_Nome_Departamento;
     private String inv_FS_Dep_Descricao;
-    private int inv_fs_ic_Id_Organizacao;
+    private int inv_FS_Dep_Id_Organizacao;
+
 
     public int getInv_FS_Dep_Id_Departamento() {
         return inv_FS_Dep_Id_Departamento;
@@ -18,12 +19,12 @@ public class DepartamentoDTO {
         this.inv_FS_Dep_Id_Departamento = inv_FS_Dep_Id_Departamento;
     }
 
-    public int getInv_fs_ic_Id_Organizacao() {
-        return inv_fs_ic_Id_Organizacao;
+    public int getInv_FS_Dep_Id_Organizacao() {
+        return inv_FS_Dep_Id_Organizacao;
     }
 
-    public void setInv_fs_ic_Id_Organizacao(int inv_fs_ic_Id_Organizacao) {
-        this.inv_fs_ic_Id_Organizacao = inv_fs_ic_Id_Organizacao;
+    public void setInv_FS_Dep_Id_Organizacao(int inv_FS_Dep_Id_Organizacao) {
+        this.inv_FS_Dep_Id_Organizacao = inv_FS_Dep_Id_Organizacao;
     }
 
     public String getInv_FS_Dep_Nome_Departamento() {
