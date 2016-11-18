@@ -44,6 +44,8 @@ public class EquipamentoContract {
         public final static String DEPARTAMENTO = "inv_fs_ic_Id_Departamento";
         public final static String LOCALIDADE = "inv_fs_ic_Id_Localidade";
         public static final String DATA = "inv_fs_ic_Data_Criacao";
+        public static final String FABRICANTE = "inv_fs_ic_Id_Fabricante";
+        public static final String MODELO = "inv_fs_ic_Id_Modelo";
 
         public static final String ESTADO = "inv_fs_ic_EstadoSinc";
         public static final String ID_REMOTA = "inv_fs_ic_idRemoto";

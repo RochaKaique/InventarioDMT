@@ -33,11 +33,12 @@ import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
+import com.tivit.inventariodmt.dto.ModeloDTO;
 import com.tivit.inventariodmt.dto.StatusDTO;
 import com.tivit.inventariodmt.dto.TipoEquipamentoDTO;
 import com.tivit.inventariodmt.dto.UsuarioDTO;
 
-public class FormEquipamentoActivity extends AppCompatActivity {
+public class FormEquipamentoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     public static int ENABLE_BLUETOOTH = 1;
     public static int SELECT_PAIRED_DEVICE = 2;
@@ -74,8 +75,8 @@ public class FormEquipamentoActivity extends AppCompatActivity {
         iniciaCombos();
         //Combo localidade
         comboLocalidade();
-
-        departamento = (Spinner) findViewById(R.id.spDepartamento);
+        fabricante = (Spinner) findViewById(R.id.spFabricante);
+       //departamento = (Spinner) findViewById(R.id.spDepartamento);
         statusconexao = (TextView) findViewById(R.id.etRespConect);
         recebeRfid = (TextView) findViewById(R.id.tvRecebeRfid);
 
@@ -122,6 +123,10 @@ public class FormEquipamentoActivity extends AppCompatActivity {
             int codigoLocalidade = ((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade();
             values.put("inv_fs_ic_Id_Localidade", +codigoLocalidade);
             values.put(EquipamentoContract.Columnas.INSERT_PENDING, 1);
+            int codigoFabricante = ((FabricanteDTO) fabricante.getSelectedItem()).getInv_FS_Fab_Id_Fabricante();
+            values.put(EquipamentoContract.Columnas.FABRICANTE, codigoFabricante);
+            int codigoModelo = ((ModeloDTO) modelo.getSelectedItem()).getInv_FS_Mod_Id_Modelo();
+            values.put(EquipamentoContract.Columnas.MODELO, codigoModelo);
 
             AlertDialog.Builder msg = new AlertDialog.Builder(this);
             msg.setTitle(R.string.confirm).setMessage(R.string.keep_location);
@@ -257,13 +262,16 @@ public class FormEquipamentoActivity extends AppCompatActivity {
         tipoEquipamento = (Spinner) findViewById(R.id.spTipoEquipamento);
         tipoEquipamento.setAdapter(adTipoEquipto);
 
+
         ArrayAdapter<DepartamentoDTO> adDepartamento = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarDepartamentos());
         departamento = (Spinner) findViewById(R.id.spDepartamento);
         departamento.setAdapter(adDepartamento);
 
+
         ArrayAdapter<FabricanteDTO> adFabricante = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarFabricantes());
         fabricante = (Spinner) findViewById(R.id.spFabricante);
         fabricante.setAdapter(adFabricante);
+        fabricante.setOnItemSelectedListener(this);
 
         comboModelo(fabricante.getSelectedItemPosition() + 1);
 
@@ -279,17 +287,6 @@ public class FormEquipamentoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fabricante.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                comboModelo(fabricante.getSelectedItemPosition() + 1);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     public void comboLocalidade() {
@@ -299,7 +296,7 @@ public class FormEquipamentoActivity extends AppCompatActivity {
     }
 
     public void comboModelo(int codigoFabricante) {
-        ArrayAdapter<String> adModelo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, codigoFabricante);
+        ArrayAdapter<ModeloDTO> adModelo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarModelos(codigoFabricante));
         modelo = (Spinner) findViewById(R.id.spModelo);
         modelo.setAdapter(adModelo);
     }
@@ -349,6 +346,22 @@ public class FormEquipamentoActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.spFabricante:
+                ArrayAdapter<ModeloDTO> adModelo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarModelos(((FabricanteDTO) fabricante.getSelectedItem()).getInv_FS_Fab_Id_Fabricante()));
+                modelo = (Spinner) findViewById(R.id.spModelo);
+                modelo.setAdapter(adModelo);
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
     /*@Override
     public void onBackPressed()

@@ -109,17 +109,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Status( " +
-                "inv_FS_St_id_Status INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "inv_FS_St_id_Status INTEGER PRIMARY KEY," +
                 "inv_FS_St_Nome_Status TEXT," +
                 "inv_FS_St_Descricao TEXT);");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Fabricante(" +
-                "inv_FS_Fab_Id_Fabricante INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_Fab_Id_Fabricante INTEGER PRIMARY KEY, " +
                 "inv_FS_Fab_Nome_Fabricante TEXT, " +
                 "inv_FS_Fab_Descricao TEXT);");
         
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Sub_Status(" +
-                "inv_FS_Subst_id_Sub_Status INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_Subst_id_Sub_Status INTEGER PRIMARY KEY, " +
                 "inv_FS_Subst_Nome_Sub_Status TEXT, " +
                 "inv_FS_Subst_Descricao TEXT, " +
                 "inv_fs_ic_Id_Status INTEGER, " +
@@ -135,15 +135,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_For_Telefone TEXT);");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Modelo(" +
-                "inv_FS_Mod_Id_Modelo INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_Mod_Id_Modelo INTEGER PRIMARY KEY, " +
                 "inv_FS_Mod_Nome_Modelo TEXT, " +
                 "inv_FS_Mod_Descricao TEXT, " +
                 "Inv_FS_Mod_Ano INTEGER, " +
-                "inv_fs_ic_Id_Fabricante INTEGER, " +
-                "FOREIGN KEY(inv_fs_ic_Id_Fabricante) REFERENCES inv_FS_Fabricante(inv_FS_Fab_Id_Fabricante));");
+                "inv_FS_Mod_Id_Fabricante INTEGER, " +
+                "FOREIGN KEY(inv_FS_Mod_Id_Fabricante) REFERENCES inv_FS_Fabricante(inv_FS_Fab_Id_Fabricante));");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Tipo_Equipamento(" +
-                "inv_FS_TP_Id_Tipo_Equipamento INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_TP_Id_Tipo_Equipamento INTEGER PRIMARY KEY, " +
                 "inv_FS_TP_Nome_Equipamento TEXT, " +
                 "inv_FS_TP_Kit_Instalacao INTEGER, " +
                 "inv_FS_TP_Descricao TEXT);");
@@ -176,11 +176,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_Org_Descricao TEXT);");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Departamento(" +
-                "inv_FS_Dep_Id_Departamento INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_Dep_Id_Departamento INTEGER PRIMARY KEY, " +
                 "inv_FS_Dep_Nome_Departamento TEXT, " +
                 "inv_FS_Dep_Descricao TEXT, " +
-                "inv_fs_ic_Id_Organizacao INTEGER, " +
-                "FOREIGN KEY(inv_fs_ic_Id_Organizacao) REFERENCES inv_FS_Organizacao(inv_FS_Org_Id_Organizacao));");
+                "inv_FS_Dep_Id_Organizacao INTEGER, " +
+                "FOREIGN KEY(inv_FS_Dep_Id_Organizacao) REFERENCES inv_FS_Organizacao(inv_FS_Org_Id_Organizacao));");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Centro_Custo(" +
                 "inv_FS_CC_Id_Centro_Custo INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -314,15 +314,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "data_verificacao DATE);");
 
 //      INSERÇÕES DE TESTE NO BANCO
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Nome_Equipamento) VALUES ('Desktop');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Nome_Equipamento) VALUES ('Notebook');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Nome_Equipamento) VALUES ('Desktop');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Nome_Equipamento) VALUES ('Notebook');");
 
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Nome_Departamento) VALUES ('TI');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Nome_Departamento) VALUES ('Fiscal');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Fab_Id_Fabricante, inv_FS_Dep_Nome_Departamento) VALUES ('TI');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Fab_Id_Fabricante, inv_FS_Dep_Nome_Departamento) VALUES ('Fiscal');");
 
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_Nome_Status) VALUES ('Instalado');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_Nome_Status) VALUES ('Manutenção');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (1, 'Dell')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (2, 'HP')");
 
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_Nome_Status) VALUES ('Instalado');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_Nome_Status) VALUES ('Manutenção');");
+
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) \n" +
+//                "VALUES ('Pavillion', 2, 2015)");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) \n" +
+//                "VALUES ('Vostro', 1, 2015);");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) \n" +
+//                "VALUES ('Optiplex', 1, 2015);");
 
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Estado(inv_FS_Est_Nome) VALUES ('SP')");
 

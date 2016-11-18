@@ -13,6 +13,7 @@ import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
+import com.tivit.inventariodmt.dto.ModeloDTO;
 import com.tivit.inventariodmt.dto.StatusDTO;
 import com.tivit.inventariodmt.dto.TipoEquipamentoDTO;
 import com.tivit.inventariodmt.dto.UsuarioDTO;
@@ -200,26 +201,32 @@ public class PreencheCombosDao {
             do {
                 FabricanteDTO f = new FabricanteDTO();
                 f.setInv_FS_Fab_Id_Fabricante(cursor.getInt(0));
-                f.setInv_FS_Fab_Nome_Fabricante(cursor.getString(0));
+                f.setInv_FS_Fab_Nome_Fabricante(cursor.getString(1));
+
+                lF.add(f);
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return lF   ;
+        return lF;
     }
 
-    public List<String> listarModelos(int codigoFabricante) {
+    public List<ModeloDTO> listarModelos(int codigoFabricante) {
         this.modelos = new ArrayList<>();
-
-        Cursor cursor = getDb().rawQuery("SELECT inv_FS_Mod_Nome_Modelo FROM inv_FS_Modelo WHERE _id = " +codigoFabricante, null);
+        List<ModeloDTO> mod = new ArrayList<>();
+        Cursor cursor = getDb().rawQuery("SELECT inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo FROM inv_FS_Modelo WHERE inv_FS_Mod_Id_Fabricante = " +codigoFabricante, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            while (cursor.moveToFirst()) {
-                String modelo = cursor.getString(0);
-                modelos.add(modelo);
-            }
+            do {
+                ModeloDTO m = new ModeloDTO();
+                m.setInv_FS_Mod_Id_Modelo(cursor.getInt(0));
+                m.setInv_FS_Mod_Nome_Modelo(cursor.getString(1));
+
+                mod.add(m);
+
+            }while(cursor.moveToNext());
         }
         cursor.close();
-        return modelos;
+        return mod;
     }
 
     public List<UsuarioDTO> listarUsuarios() {

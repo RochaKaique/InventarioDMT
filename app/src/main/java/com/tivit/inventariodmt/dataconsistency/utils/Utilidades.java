@@ -40,6 +40,8 @@ public class Utilidades {
         String localidade_id;
         String data_criacao;
         String estado;
+        String fabricante;
+        String modelo;
 
         inv_fs_ic_numero_serie = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.N_SERIE));
         inv_fs_ic_Patrimonio = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.PATRIMONIO));
@@ -50,6 +52,8 @@ public class Utilidades {
         localidade_id = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.LOCALIDADE));
         data_criacao = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.DATA));
         estado = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.ESTADO));
+        fabricante = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.FABRICANTE));
+        modelo = c.getString(c.getColumnIndex(EquipamentoContract.Columnas.MODELO));
 
         try {
             jObject.put(EquipamentoContract.Columnas.N_SERIE,inv_fs_ic_numero_serie);
@@ -61,6 +65,8 @@ public class Utilidades {
             jObject.put(EquipamentoContract.Columnas.LOCALIDADE, localidade_id);
             jObject.put(EquipamentoContract.Columnas.DATA, data_criacao);
             jObject.put(EquipamentoContract.Columnas.ESTADO, estado);
+            jObject.put(EquipamentoContract.Columnas.FABRICANTE, fabricante);
+            jObject.put(EquipamentoContract.Columnas.MODELO, modelo);
 
         } catch (JSONException e) {
             e.printStackTrace();

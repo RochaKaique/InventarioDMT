@@ -14,15 +14,20 @@ public class Constantes {
     /**
      * Dirección IP de genymotion o AVD
      */
-    private static final String IP = "http://192.168.137.1";
+    private static final String IP = "http://192.168.49.213";
 
     /**
      * URLs del Web Service
      */
-    public static final String GET_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/Equipamento/listarPorLocalidade/";
-    public static final String INSERT_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/Equipamento/cadastrar_equipamento";
+    public static final String GET_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/equipamento/listarPorLocalidade/";
+    public static final String INSERT_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/equipamento/cadastrar_equipamento";
 
     public static final String GET_LOCALIDADE = IP + PORTA + "/InventarioDMT_Ws/webresources/localidade/listar";
+    public static final String GET_DEPARTAMENTO = IP + PORTA +"/InventarioDMT_Ws/webresources/departamento/listar";
+    public static final String GET_FABRICANTE = IP + PORTA +"/InventarioDMT_Ws/webresources/fabricante/listar";
+    public static final String GET_MODELO = IP + PORTA +"/InventarioDMT_Ws/webresources/modelo/listar";
+    public static final String GET_STATUS = IP + PORTA +"/InventarioDMT_Ws/webresources/status/listar";
+    public static final String GET_TP_EQUIPAMENTO = IP + PORTA +"/InventarioDMT_Ws/webresources/tipoequipamento/listar";
 
     /**
      * Campos de las respuestas Json
