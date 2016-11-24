@@ -16,6 +16,7 @@ import java.util.Map;
 
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 
 public class EquipamentosActivity extends ListActivity {
 
@@ -26,7 +27,7 @@ public class EquipamentosActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_equipamentos);
-
+        //Utilidades.setTaskBarColored(this);
         String[] de = {"id", "serial", "patrimonio", "dataCriacao", "tipoEquipamento", "rfid"};
         int[] para = {R.id.id, R.id.serial, R.id.patrimonio, R.id.dataCriacao, R.id.tipoEquipamento, R.id.rfid};
 

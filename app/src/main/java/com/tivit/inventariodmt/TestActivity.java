@@ -4,10 +4,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
+import com.tivit.inventariodmt.dataconsistency.utils.Criptografia;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -30,7 +32,11 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        downloadTeste();
+        //downloadTeste();
+        Criptografia c = new Criptografia();
+        //String teste = "nada";
+
+        //Log.i("teste", teste);
     }
 
     private void downloadTeste() {

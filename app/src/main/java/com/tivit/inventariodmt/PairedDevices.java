@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
+
 import java.util.Set;
 
 public class PairedDevices extends ListActivity {
@@ -20,7 +22,7 @@ public class PairedDevices extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utilidades.setTaskBarColored(this);
         /*  Esse trecho não é essencial, mas dá um melhor visual à lista.
             Adiciona um título à lista de dispositivos pareados utilizando
         o layout text_header.xml.

@@ -229,20 +229,20 @@ public class PreencheCombosDao {
         return mod;
     }
 
-    public List<UsuarioDTO> listarUsuarios() {
-        List<UsuarioDTO> lU = new ArrayList<>();
-
-        Cursor cursor = getDb().rawQuery("SELECT inv_FS_usf_id_usuario, inv_FS_usf_Nome FROM inv_FS_Usuario_Final", null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            do {
-                UsuarioDTO u = new UsuarioDTO();
-                u.setInv_fs_ic_Id_Organizacao(cursor.getInt(0));
-                u.setInv_FS_usf_Nome(cursor.getString(2));
-
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return lU;
-    }
+//    public List<UsuarioDTO> listarUsuarios() {
+//        List<UsuarioDTO> lU = new ArrayList<>();
+//
+//        Cursor cursor = getDb().rawQuery("SELECT inv_FS_usf_id_usuario, inv_FS_usf_Nome FROM inv_FS_Usuario_Final", null);
+//        cursor.moveToFirst();
+//        if (cursor.getCount() > 0) {
+//            do {
+//                UsuarioDTO u = new UsuarioDTO();
+//                u.setInv_fs_ic_Id_Organizacao(cursor.getInt(0));
+//                u.setInv_FS_usf_Nome(cursor.getString(2));
+//
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        return lU;
+//    }
 }

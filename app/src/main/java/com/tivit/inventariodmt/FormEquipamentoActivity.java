@@ -30,6 +30,7 @@ import java.util.List;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
@@ -54,6 +55,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     ConnectionThread connect = new ConnectionThread();
     private static boolean isDeviceConnected = false;
     ContentValues values = new ContentValues();
+    private static int numLeituras = 0;
 
 
     private AlertDialog confirmaDepartamento;
@@ -69,7 +71,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_equipamento);
             this.combos = new PreencheCombosDao(this);
-
+        Utilidades.setTaskBarColored(this);
 
         //Traz os combos
         iniciaCombos();
@@ -218,6 +220,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
 
         @Override
         public void handleMessage(Message msg) {
+            recebeRfid.clearComposingText();
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
             String dataString = new String(data);
@@ -232,8 +235,15 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
                 String strData = new String(data);
                 if(strRfid != strData)
                     strRfid = strRfid + strData;
-                recebeRfid.setText("");
+//                recebeRfid.setText("");
                 recebeRfid.setText(strRfid.toUpperCase());
+                if(strRfid != "" && strData.length() < 10)
+                    numLeituras ++;
+                if(numLeituras == 2) {
+                    strRfid = "";
+                    numLeituras = 0;
+                    System.out.println(recebeRfid.getText());
+                }
             }
         }
     };
@@ -275,9 +285,9 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
 
         comboModelo(fabricante.getSelectedItemPosition() + 1);
 
-        ArrayAdapter<UsuarioDTO> adUsuario = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarUsuarios());
-        usuario = (Spinner) findViewById(R.id.spUsuario);
-        usuario.setAdapter(adUsuario);
+//        1ArrayAdapter<UsuarioDTO> adUsuario = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarUsuarios());
+//        usuario = (Spinner) findViewById(R.id.spUsuario);
+//        usuario.setAdapter(adUsuario);
 
         ArrayAdapter<StatusDTO> adStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarStatus());
         status = (Spinner) findViewById(R.id.spStatus);

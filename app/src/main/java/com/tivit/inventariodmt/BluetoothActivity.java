@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
+
 public class BluetoothActivity extends AppCompatActivity {
 
     public static int ENABLE_BLUETOOTH = 1;
@@ -28,7 +30,7 @@ public class BluetoothActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
-
+        Utilidades.setTaskBarColored(this);
         statusconexao = (TextView) findViewById(R.id.etRespConect);
         textSpace = (TextView) findViewById(R.id.textSpace);
 

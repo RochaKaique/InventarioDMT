@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
+
 public class DiscoveredDevices extends ListActivity {
 
     /*  Um adaptador para conter os elementos da lista de dispositivos descobertos.
@@ -30,7 +32,7 @@ public class DiscoveredDevices extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utilidades.setTaskBarColored(this);
         /*  Esse trecho não é essencial, mas dá um melhor visual à lista.
             Adiciona um título à lista de dispositivos pareados utilizando
         o layout text_header.xml.

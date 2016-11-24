@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
-import com.tivit.inventariodmt.util.ConexaoInternet;
 
 public class MenuActivity extends AppCompatActivity implements Runnable{
 
@@ -24,11 +23,14 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
     private TextView verificaBluetooth, cadastrarEquipamento, contagem;
     SharedPreferences sPreferences = null;
 
+    public static String login;
+    public static String pass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        ConexaoInternet netConn = new ConexaoInternet(this);
 
+        Utilidades.setTaskBarColored(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -58,11 +60,10 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
     }
 
     public void run(){
+        SyncAdapter.sincronizarAhora(getApplicationContext(),false,2);
         if (sPreferences.getBoolean("firstRun", true)) {
-            SyncAdapter.sincronizarAhora(getApplicationContext(), false, 2);
             if (Utilidades.isConnected(getApplicationContext())) {
                 AlertDialog.Builder msg = new AlertDialog.Builder(this);
-                //SyncAdapter.sincronizarAhora(getApplicationContext(),false,2);
                 msg.setTitle("Bem Vindo!");
                 msg.setMessage("Bem Vindo ao APP Inventario!\nPara a Realização do Inventário Selecione a Localidade que Deseja Inventariar\nEsse Processo Deve Ser Feito Toda Vez que Você for Inventariar uma Localidade Diferente");
                 msg.setNeutralButton("OK",new DialogInterface.OnClickListener() {
@@ -147,6 +148,8 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
                 break;
         }
     }
+
+
 
     public void abreAteste(View view)
     {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
+import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
 
 public class DownloadActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class DownloadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
+        Utilidades.setTaskBarColored(this);
         this.combos = new PreencheCombosDao(this);
         comboLocalidade();
 

@@ -308,10 +308,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(inv_fs_ic_Id_Termo) REFERENCES inv_FS_Termo_Responsabilidade(inv_FS_TR_ID_Termo), " +
                 "FOREIGN KEY(inv_fs_ic_Id_Departamento) REFERENCES inv_FS_Departamento(inv_FS_Dep_Id_Departamento));");
 
+        sqLiteDatabase.execSQL("CREATE TABLE inv_Usuario(" +
+                "inv_us_id_Usuario INTEGER PRIMARY KEY," +
+                "inv_us_Nome TEXT," +
+                "inv_us_Login TEXT," +
+                "inv_us_Senha TEXT," +
+                "inv_us_Perfil INTEGER," +
+                "inv_us_Email TEXT," +
+                "inv_us_Ativo INTEGER," +
+                "FOREIGN KEY(inv_us_Perfil) REFERENCES inv_Perfil_Usuario(inv_PU_Id_Perfil_Usuario));");
+
         sqLiteDatabase.execSQL("CREATE TABLE verificacao(" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "rfid TEXT, " +
                 "data_verificacao DATE);");
+
+
 
 //      INSERÇÕES DE TESTE NO BANCO
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Nome_Equipamento) VALUES ('Desktop');");
@@ -326,11 +338,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_Nome_Status) VALUES ('Instalado');");
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_Nome_Status) VALUES ('Manutenção');");
 
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) \n" +
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
 //                "VALUES ('Pavillion', 2, 2015)");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) \n" +
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
 //                "VALUES ('Vostro', 1, 2015);");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) \n" +
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
 //                "VALUES ('Optiplex', 1, 2015);");
 
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Estado(inv_FS_Est_Nome) VALUES ('SP')");
@@ -340,11 +352,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('CENESP', 'São Paulo')");
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('Ipiranga', 'São Paulo')");
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES ('Transamerica', 'São Paulo')");
-
-
-
-
-
     }
 
     @Override
