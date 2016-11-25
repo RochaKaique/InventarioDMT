@@ -68,6 +68,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = SyncAdapter.class.getSimpleName();
     public static int tabelaASincronizar = -1;
+    public  static boolean requisitouUsuario = false;
     ContentResolver resolver;
     //LocalidadeProvider resolverL;
     private Gson gson = new Gson();
@@ -176,8 +177,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void realizarSincronizacionLocal(final SyncResult syncResult) {
         Log.i(TAG, "Actualizando o cliente.");
         final boolean[] retorno = new boolean[1];
-        try {
-            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_URL+ DownloadActivity.idLocalidade + Criptografia.encrypt(MenuActivity.pass),
+        try{
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_URL+ DownloadActivity.idLocalidade + "/"+MenuActivity.login + "/" + Criptografia.encrypt(MenuActivity.pass),
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -435,13 +436,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public void onResponse(JSONArray response) {
                             atualizarUsuario(response, syncResult);
+                            requisitouUsuario = true;
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.e(TAG, error.toString());
-
+                            requisitouUsuario = true;
                         }
                     }
             );

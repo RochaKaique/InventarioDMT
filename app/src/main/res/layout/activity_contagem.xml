@@ -42,12 +42,12 @@
             android:text="@string/connection_read" />
 
         <TextView
-            android:id="@+id/tvQuantidadePendente"
+            android:id="@+id/tvQuantidadeEncontrada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/pending"
-            android:textSize="20dip" />
+            android:text="@string/amount_found"
+            android:textSize="20dip"/>
 
         <TextView
             android:id="@+id/tvTotalEquipamentosInicial"
@@ -78,12 +78,12 @@
             android:onClick="finalizarContagem"/>
 
         <TextView
-            android:id="@+id/tvQuantidadeEncontrada"
+            android:id="@+id/tvQuantidadePendente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/amount_found"
-            android:textSize="20dip"/>
+            android:text="@string/pending"
+            android:textSize="20dip" />
 
         <TextView
             android:id="@+id/tvValorLido"

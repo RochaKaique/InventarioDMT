@@ -220,7 +220,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
 
         @Override
         public void handleMessage(Message msg) {
-            recebeRfid.clearComposingText();
+           // recebeRfid.clearComposingText();
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
             String dataString = new String(data);
@@ -242,8 +242,8 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
                 if(numLeituras == 2) {
                     strRfid = "";
                     numLeituras = 0;
-                    System.out.println(recebeRfid.getText());
-                }
+                } else if (numLeituras == 0)
+                    strRfid = "";
             }
         }
     };

@@ -64,8 +64,8 @@
     <string name="registred">Cadastrados</string>
     <string name="score">Contagem</string>
     <string name="nothing_bluetooth">O recurso bluetooth não está disponivel.</string>
-    <string name="amount_found">Quantidade encontrada</string>
-    <string name="pending">Equipamentos pendentes</string>
+    <string name="amount_found">Equipamentos Dentro do Inventário</string>
+    <string name="pending">Equipamentos Fora do Inventário (Novos)</string>
     <string name="reading_start">Iniciar leitura</string>
     <string name="end_score">Finalizar contagem</string>
     <string name="generate_report">Gerar relatório</string>

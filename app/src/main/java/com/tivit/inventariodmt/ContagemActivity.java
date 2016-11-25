@@ -56,8 +56,8 @@ public class ContagemActivity extends AppCompatActivity {
     static Set<String> rfids;
     private BluetoothAdapter blueAdapter;
     private EquipamentoDAO equipamentoDAO;
-    private List rfidValido;
-    private List rfidInvalido;
+    static Set<String> rfidValido;
+    static Set<String> rfidInvalido;
     private Spinner localidade;
 
 
@@ -90,8 +90,8 @@ public class ContagemActivity extends AppCompatActivity {
         this.verificaProgress = false;
         this.equipamentoDAO = new EquipamentoDAO(this);
         this.rfids = new TreeSet<>();
-        this.rfidValido = new ArrayList();
-        this.rfidInvalido = new ArrayList();
+        this.rfidValido = new TreeSet<>();
+        this.rfidInvalido = new TreeSet<>();
         this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
 
         acionarContagem = (Button) findViewById(R.id.btAcionarContagem);
@@ -104,9 +104,10 @@ public class ContagemActivity extends AppCompatActivity {
         quantidadeEquipamentosInicial = (TextView) findViewById(R.id.tvTotalEquipamentosInicial);
         localidade = (Spinner) findViewById(R.id.spLocalidade);
         labelQuantidadeEncontrada.setVisibility(View.INVISIBLE);
-        quantidadeEquipamentosInicial.setText(equipamentoDAO.contagemEquipamentos());
+        //quantidadeEquipamentosInicial.setText(equipamentoDAO.contagemEquipamentos());
         quantidadeEncontrada.setVisibility(View.INVISIBLE);
         valorLido.setVisibility(View.INVISIBLE);
+
         gerarRelatorio.setVisibility(View.INVISIBLE);
         finalizarContagem.setVisibility(View.INVISIBLE);
 
@@ -167,33 +168,11 @@ public class ContagemActivity extends AppCompatActivity {
         }
     }
 
-//    public static Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            //if (leitura == true) {
-//                Bundle bundle = msg.getData();
-//                byte[] data = bundle.getByteArray("data");
-//                String dataString = new String(data);
-//
-//                if (dataString.equals("---N"))
-//                    statusBluetooth.setText("Ocorreu um erro durante a conexão.");
-//                else if (dataString.equals("---S"))
-//                    statusBluetooth.setText("Conectado.");
-//                else {
-//                    rfids.add(new String(data + "\n"));
-//                    //recebeRfid.setText(new String(data));
-//                    //MUDAR
-//                    quantidadeEncontrada.setText("" + rfids.size());
-//                }
-//            //}
-//        }
-//    };
-
     public static Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            //recebeRfid.clearComposingText();
+
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
             String dataString = new String(data);
@@ -202,22 +181,19 @@ public class ContagemActivity extends AppCompatActivity {
                 statusBluetooth.setText("Ocorreu um erro durante a conexão.");
             else if (dataString.equals("---S")) {
                 statusBluetooth.setText("Conectado.");
-                //isDeviceConnected = true;
             }
             else {
                 String strData = new String(data);
                 if(strRfid != strData)
                     strRfid = strRfid + strData;
-//                recebeRfid.setText("");
-                //recebeRfid.setText(strRfid.toUpperCase());
                 if(strRfid != "" && strData.length() < 10)
                     numLeituras ++;
                 if(numLeituras == 2) {
                     rfids.add(strRfid);
                     strRfid = "";
                     numLeituras = 0;
-
-                }
+                } else if (numLeituras == 0)
+                strRfid = "";
             }
         }
     };
@@ -242,6 +218,7 @@ public class ContagemActivity extends AppCompatActivity {
 
 
     public void finalizarContagem(View view) {
+        rfids.clear();
         System.out.println("F I N A L I Z A R");
         leitura = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -258,17 +235,25 @@ public class ContagemActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int id) {
                 acionarContagem.setText(R.string.score_starting);
                 verificarRfids();
-                String idsValidos = "" +rfidInvalido.size();
-                valorLido.setText(idsValidos);
+                String idsInvalidos = "" +rfidInvalido.size();
+                String idsValidos = "" + rfidValido.size();
+                valorLido.setText(idsInvalidos);
+                quantidadeEquipamentosInicial.setText(idsValidos);
                 quantidadeEncontrada.setVisibility(View.VISIBLE);
                 labelQuantidadeEncontrada.setVisibility(View.VISIBLE);
                 valorLido.setVisibility(View.VISIBLE);
                 gerarRelatorio.setVisibility(View.VISIBLE);
-                int j = 0;
-                while (j < rfidValido.size()) {
-                    verificaProgress = true;
-                    //equipamentoDAO.insertRfid("" + rfidValido.get(j));
+
+                for(String i : rfidValido)
+                {
+                    Toast.makeText(ContagemActivity.this,i.replace("\n","").replace("\r",""), Toast.LENGTH_SHORT).show();
                 }
+//                int j = 0;
+//                while (j < rfidValido.size()) {
+//                    verificaProgress = true;
+//                    equipamentoDAO.insertRfid("" + rfidValido.get(j));
+//                    j++;
+//                }
                 rfidValido.clear();
                 verificaProgress = false;
                 finalizarContagem.setVisibility(View.INVISIBLE);
@@ -281,19 +266,17 @@ public class ContagemActivity extends AppCompatActivity {
     public void verificarRfids() {
         Uri uri = EquipamentoContract.CONTENT_URI;
 
-        Iterator i = rfids.iterator();
+        //Iterator i = rfids.iterator();
         //int loc = ((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade();
-
-        String selection = EquipamentoContract.Columnas.RFID + " = ?";
-        String[] selectionArgs = new String[]{i.next().toString()};
-
-
-        while (i.hasNext()) {
+        for(String i : rfids)
+        {
+            String selection = EquipamentoContract.Columnas.RFID + " = ?";
+            String[] selectionArgs = new String[]{i.toUpperCase().replace("\n","").replace("\r","")};
             Cursor c = getContentResolver().query(uri, PROJECTION, selection, selectionArgs, null);
             if (c.getCount() > 0) {
-                rfidValido.add(i.next());
+                rfidValido.add(i);
             } else {
-                rfidInvalido.add(i.next());
+                rfidInvalido.add(i);
             }
         }
     }
