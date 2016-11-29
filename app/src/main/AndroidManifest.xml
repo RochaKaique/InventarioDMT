@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- Red -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -52,6 +53,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ContagemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContagemActivityNova"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ApresentacaoActivity"
