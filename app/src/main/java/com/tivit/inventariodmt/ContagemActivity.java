@@ -53,12 +53,14 @@ public class ContagemActivity extends AppCompatActivity {
     private static TextView quantidadeEquipamentosInicial;
     private static TextView labelQuantidadeEncontrada;
     private TextView valorLido;
+    private int totalEqLocalizados;
     static Set<String> rfids;
     private BluetoothAdapter blueAdapter;
     private EquipamentoDAO equipamentoDAO;
     static Set<String> rfidValido;
     static Set<String> rfidInvalido;
-    private Spinner localidade;
+    //private Spinner localidade;
+    private static boolean isDeviceConnected = false;
 
 
     private static final String[] PROJECTION = new String[]{
@@ -102,7 +104,7 @@ public class ContagemActivity extends AppCompatActivity {
         quantidadeEncontrada = (TextView) findViewById(R.id.tvValorLido);
         valorLido = (TextView) findViewById(R.id.tvValorLido);
         quantidadeEquipamentosInicial = (TextView) findViewById(R.id.tvTotalEquipamentosInicial);
-        localidade = (Spinner) findViewById(R.id.spLocalidade);
+        //localidade = (Spinner) findViewById(R.id.spLocalidade);
         labelQuantidadeEncontrada.setVisibility(View.INVISIBLE);
         //quantidadeEquipamentosInicial.setText(equipamentoDAO.contagemEquipamentos());
         quantidadeEncontrada.setVisibility(View.INVISIBLE);
@@ -115,10 +117,6 @@ public class ContagemActivity extends AppCompatActivity {
             statusBluetooth.setText(R.string.bluetooth_actived);
         }
         this.rfids = new TreeSet<>();
-
-        populaCombos();
-        LocalidadeDTO l = (LocalidadeDTO) localidade.getSelectedItem();
-        Toast.makeText(this,l.toString(),Toast.LENGTH_LONG);
     }
 
     @Override
@@ -160,7 +158,7 @@ public class ContagemActivity extends AppCompatActivity {
                 statusBluetooth.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
                         + data.getStringExtra("btDevAddress"));
 
-                connect = new ConnectionThreadContagem(data.getStringExtra("btDevAddress"));
+                connect = new   ConnectionThreadContagem(data.getStringExtra("btDevAddress"));
                 connect.start();
             } else {
                 statusBluetooth.setText("Nenhum dispositivo selecionado.");
@@ -181,6 +179,7 @@ public class ContagemActivity extends AppCompatActivity {
                 statusBluetooth.setText("Ocorreu um erro durante a conexão.");
             else if (dataString.equals("---S")) {
                 statusBluetooth.setText("Conectado.");
+                isDeviceConnected = true;
             }
             else {
                 String strData = new String(data);
@@ -200,10 +199,14 @@ public class ContagemActivity extends AppCompatActivity {
 
     public void acionaContagem(View view) {
         if (leitura == false) {
-            enviarMensagem("L");
-            acionarContagem.setText(R.string.pause_score);
-            finalizarContagem.setVisibility(View.VISIBLE);
-            leitura = true;
+            if(isDeviceConnected) {
+                enviarMensagem("L");
+                acionarContagem.setText(R.string.pause_score);
+                finalizarContagem.setVisibility(View.VISIBLE);
+                leitura = true;
+            }
+            else
+                new AlertDialog.Builder(ContagemActivity.this).setMessage("Conecte-se ao Leitor RFID!").setNeutralButton("OK",null).show();
         }
         else if (leitura == true) {
             acionarContagem.setText(R.string.restart_score);
@@ -218,7 +221,6 @@ public class ContagemActivity extends AppCompatActivity {
 
 
     public void finalizarContagem(View view) {
-        rfids.clear();
         System.out.println("F I N A L I Z A R");
         leitura = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -238,16 +240,13 @@ public class ContagemActivity extends AppCompatActivity {
                 String idsInvalidos = "" +rfidInvalido.size();
                 String idsValidos = "" + rfidValido.size();
                 valorLido.setText(idsInvalidos);
-                quantidadeEquipamentosInicial.setText(idsValidos);
+                quantidadeEquipamentosInicial.setText(idsValidos +" de "+ totalEqLocalizados);
                 quantidadeEncontrada.setVisibility(View.VISIBLE);
                 labelQuantidadeEncontrada.setVisibility(View.VISIBLE);
                 valorLido.setVisibility(View.VISIBLE);
                 gerarRelatorio.setVisibility(View.VISIBLE);
 
-                for(String i : rfidValido)
-                {
-                    Toast.makeText(ContagemActivity.this,i.replace("\n","").replace("\r",""), Toast.LENGTH_SHORT).show();
-                }
+
 //                int j = 0;
 //                while (j < rfidValido.size()) {
 //                    verificaProgress = true;
@@ -255,6 +254,8 @@ public class ContagemActivity extends AppCompatActivity {
 //                    j++;
 //                }
                 rfidValido.clear();
+                rfidInvalido.clear();
+                rfids.clear();
                 verificaProgress = false;
                 finalizarContagem.setVisibility(View.INVISIBLE);
             }
@@ -268,11 +269,18 @@ public class ContagemActivity extends AppCompatActivity {
 
         //Iterator i = rfids.iterator();
         //int loc = ((LocalidadeDTO) localidade.getSelectedItem()).getInv_FS_Loc_Id_Localidade();
+        String where = EquipamentoContract.Columnas.RFID + " != ?";
+        String[] param = new String[]{""};
+        Cursor cCount = getContentResolver().query(uri,PROJECTION,where,param,null);
+        totalEqLocalizados = cCount.getCount();
+
         for(String i : rfids)
         {
             String selection = EquipamentoContract.Columnas.RFID + " = ?";
             String[] selectionArgs = new String[]{i.toUpperCase().replace("\n","").replace("\r","")};
             Cursor c = getContentResolver().query(uri, PROJECTION, selection, selectionArgs, null);
+
+
             if (c.getCount() > 0) {
                 rfidValido.add(i);
             } else {
@@ -284,12 +292,5 @@ public class ContagemActivity extends AppCompatActivity {
     public void gerarRelatorio(View view) throws DocumentException, IOException {
         GeradorPdf geraPdf = new GeradorPdf();
         geraPdf.criarPdf(ARQUIVO);
-    }
-
-    private void populaCombos()
-    {
-        ArrayAdapter<LocalidadeDTO> adLocalidade = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarLocalidades());
-        localidade = (Spinner) findViewById(R.id.spLocalidade);
-        localidade.setAdapter(adLocalidade);
     }
 }

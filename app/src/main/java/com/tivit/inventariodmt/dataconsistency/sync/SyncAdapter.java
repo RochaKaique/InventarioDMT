@@ -875,6 +875,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     .withValue(EquipamentoContract.Columnas.STATUS, e.getInv_fs_ic_Id_Status())
                     .withValue(EquipamentoContract.Columnas.DEPARTAMENTO, e.getInv_fs_ic_Id_Departamento())
                     .withValue(EquipamentoContract.Columnas.DATA, e.getInv_fs_ic_Data_Criacao())
+                    .withValue(EquipamentoContract.Columnas.MODELO, e.getInv_fs_ic_Id_Modelo())
+                    .withValue(EquipamentoContract.Columnas.FABRICANTE, e.getInv_fs_ic_Id_Fabricante())
+                    .withValue(EquipamentoContract.Columnas.LOCALIDADE, e.getInv_fs_ic_Id_Localidade())
                     .build());
             syncResult.stats.numInserts++;
         }

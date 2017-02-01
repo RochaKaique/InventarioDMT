@@ -13,9 +13,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.itextpdf.text.DocumentException;
+import com.tivit.inventariodmt.dao.GeradorPdf;
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
+
+import java.io.IOException;
 
 public class MenuActivity extends AppCompatActivity implements Runnable{
 
@@ -25,7 +31,6 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
 
     public static String login;
     public static String pass;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,15 +70,15 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
             if (Utilidades.isConnected(getApplicationContext())) {
                 AlertDialog.Builder msg = new AlertDialog.Builder(this);
                 msg.setTitle("Bem Vindo!");
-                msg.setMessage("Bem Vindo ao APP Inventario!\nPara a Realização do Inventário Selecione a Localidade que Deseja Inventariar\nEsse Processo Deve Ser Feito Toda Vez que Você for Inventariar uma Localidade Diferente");
+                msg.setMessage("Para a Realização do Inventário Selecione a Localidade Desejada\n");
                 msg.setNeutralButton("OK",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         sPreferences.edit().putBoolean("firstRun", false).apply();
-                        startActivity(new Intent(getApplicationContext(), DownloadActivity.class));
+                        //startActivity(new Intent(getApplicationContext(), DownloadActivity.class));
                     }
                 });
-                msg.show();
+                //msg.show();
             } else {
                 AlertDialog.Builder msg = new AlertDialog.Builder(this);
                 msg.setTitle("Verifique A Conexão");
@@ -100,12 +105,12 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
                 startActivity(new Intent(this, EquipamentosActivity.class));
                 break;
             case R.id.tvContagemEquipamentos:
-                startActivity(new Intent(this, ContagemActivity.class));
+                startActivity(new Intent(this, ContagemActivityNova.class));
                 break;
             case R.id.tvDownloadDados:
                 if(Utilidades.isConnected(getApplicationContext())) {
                     startActivity(new Intent(this, DownloadActivity.class));
-                    //SyncAdapter.sincronizarAhora(getApplicationContext(), false);
+                    SyncAdapter.sincronizarAhora(getApplicationContext(),false,1);
                 }
                 else
                 {
@@ -121,7 +126,7 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
             case R.id.tvUploadDB:
                 if(Utilidades.isConnected(getApplicationContext())) {
                     AlertDialog.Builder msg = new AlertDialog.Builder(this);
-                    msg.setTitle("ATENÇÃO").setMessage("Este procedimento deve ser feito ao final de suas atividades \n\n <<Isto Irá Apagar Seus Dados Locais>> \n\n Condifima a Solicitação de Upload de Dados?");
+                    msg.setTitle("ATENÇÃO").setMessage("Este procedimento deve ser feito ao final de suas atividades \n\n <<Isto Irá Apagar Seu Dados Locais>> \n\n Confirma a Solicitação de Envio de Inventário?");
                     msg.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -153,7 +158,6 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
 
     public void abreAteste(View view)
     {
-        Intent it = new Intent(this, TestActivity.class);
-        startActivity(it);
+        startActivity(new Intent(this, TestActivity.class));
     }
 }

@@ -302,7 +302,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(inv_fs_ic_Id_Fabricante) REFERENCES inv_FS_Fabricante(inv_FS_Fab_Id_Fabricante), " +
                 "FOREIGN KEY(inv_fs_ic_Id_Modelo) REFERENCES inv_FS_Modelo(inv_FS_Mod_Id_Modelo), " +
                 "FOREIGN KEY(inv_fs_ic_Id_Fornecedor) REFERENCES inv_FS_Fornecedor(inv_FS_For_Id_Fornecedor), " +
-                "FOREIGN KEY(inv_fs_ic_Id_Tipo_Equipamento) REFERENCES inv_FS_Tipo_Equipamento(inv_FS_For_Id_Fornecedor), " +
+                "FOREIGN KEY(inv_fs_ic_Id_Tipo_Equipamento) REFERENCES inv_FS_Tipo_Equipamento(inv_FS_TP_Id_Tipo_Equipamento), " +
                 "FOREIGN KEY(inv_fs_ic_Id_Tipo_Aquisiçao) REFERENCES inv_FS_Tipo_Aquisicao(inv_FS_TA_ID_Tipo_Aquisicao), " +
                 "FOREIGN KEY(inv_fs_ic_Id_Localidade) REFERENCES inv_FS_Localidade(inv_FS_Loc_Id_Localidade), " +
                 "FOREIGN KEY(inv_fs_ic_Id_Organizacao) REFERENCES inv_FS_Organizacao(inv_FS_Org_Id_Organizacao), " +
@@ -332,7 +332,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (2, 'Notebook');");
 //        sqLiteDatabase.execSQL("INSERT INTO inv_Perfil_Usuario (inv_PU_Nome_Perfil_Usuario) VALUES ('Padrao')");
 //        try {
-//            sqLiteDatabase.execSQL("INSERT INTO inv_Usuario (inv_us_Login, inv_us_Senha, inv_us_Perfil) VALUES ('marcos', '"+ Criptografia.encrypt("1234")+"', 1)");
+//            sqLiteDatabase.execSQL("INSERT INTO inv_Usuario (inv_us_Login, inv_us_Senha, inv_us_Perfil) VALUES ('alexandre', '"+ Criptografia.encrypt("1234")+"', 1)");
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -343,7 +343,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (1, 'Dell')");
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (2, 'HP')");
 //
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (1, 'Instalado');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (1, 'Em Uso');");
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (2, 'Manutenção');");
 //
 //        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +

@@ -9,6 +9,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
@@ -227,6 +228,22 @@ public class PreencheCombosDao {
         }
         cursor.close();
         return mod;
+    }
+
+    public Cursor selcionaPorRfid(String rfid)
+    {
+        //rfid = rfid.toUpperCase().replace("\n","").replace("\r","");
+        String[] selecArgs = new String[]{rfid.replace("\n","").replace("\r","").toUpperCase().trim()};
+        String sql = "SELECT ic.inv_fs_ic_RFID, ic.inv_fs_ic_numero_serie, tp.inv_FS_TP_Nome_Equipamento, fab.inv_FS_Fab_Nome_Fabricante, modd.inv_FS_Mod_Nome_Modelo, loc.inv_FS_Loc_Descricao FROM inv_fs_item_config ic " +
+                "INNER JOIN inv_FS_Localidade loc ON loc.inv_FS_Loc_Id_Localidade = ic.inv_fs_ic_Id_Localidade " +
+                "INNER JOIN inv_FS_Fabricante fab ON fab.inv_FS_Fab_Id_Fabricante = ic.inv_fs_ic_Id_Fabricante " +
+                "INNER JOIN inv_FS_Modelo modd ON modd.inv_FS_Mod_Id_Modelo = ic.inv_fs_ic_Id_Modelo " +
+                "INNER JOIN inv_FS_Tipo_Equipamento tp ON ic.inv_fs_ic_Id_Tipo_Equipamento = tp.inv_FS_TP_Id_Tipo_Equipamento " +
+                "WHERE ic.inv_fs_ic_RFID == ?";
+
+        Cursor c = getDb().rawQuery(sql,selecArgs);
+
+        return c;
     }
 
 //    public List<UsuarioDTO> listarUsuarios() {

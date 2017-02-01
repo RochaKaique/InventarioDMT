@@ -2,17 +2,22 @@ package com.tivit.inventariodmt.dataconsistency.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,11 +29,18 @@ import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dto.EquipamentoDTO;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
 /**
  * Created by kaique.rocha on 25/10/2016.
  */
 
-public class Utilidades {
+public class Utilidades extends AppCompatActivity {
 
 
     public static boolean materialDesign() {
@@ -120,24 +132,6 @@ public class Utilidades {
         return j;
     }
 
-    public static int networkState(Context cont){
-        ConnectivityManager cm = (ConnectivityManager)cont.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-        if(isConnected)
-        {
-            boolean isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-            if (isWiFi){
-                return 1;
-            }
-            return 2;
-        }
-        else{
-            return -1;
-        }
-    }
-
 
     public static boolean isConnected(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -160,5 +154,25 @@ public class Utilidades {
         }
     }
 
+    public static void escreverArquivo(String sFileName, String sBody) throws IOException {
+        File root = new File(Environment.getExternalStorageDirectory(), "Relatorios");
+        if (!root.exists()) {
+            root.mkdirs();
+        }
+        File gpxfile = new File(root, sFileName);
+        FileWriter writer = new FileWriter(gpxfile);
+        writer.append(sBody);
+        writer.flush();
+        writer.close();
+    }
+
+    public void abrirArquivo(){
+        Intent i = new Intent();
+        File root = new File(Environment.getExternalStorageDirectory(), "Relatorios");
+        File relat = new File(root,"Invetario.html");
+
+        i.setDataAndType(Uri.fromFile(relat), "text/html");
+        startActivity(i);
+    }
 
 }

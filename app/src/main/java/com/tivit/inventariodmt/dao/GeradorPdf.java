@@ -1,6 +1,7 @@
 package com.tivit.inventariodmt.dao;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -23,5 +24,6 @@ public class GeradorPdf {
         document.open();
         document.add(new Paragraph("Hello World!!!"));
         document.close();
+        Log.i("Local", Environment.getExternalStorageDirectory().getAbsolutePath());
     }
 }

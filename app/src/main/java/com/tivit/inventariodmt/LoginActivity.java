@@ -66,18 +66,19 @@ public class LoginActivity extends AppCompatActivity implements Runnable {
         else
             handler.postDelayed(this, 1000);
 
-
     }
 
     @Override
     public void run() {
+        ProgressBar pLogin = (ProgressBar) findViewById(R.id.pLoadLogin);
         UsuarioDAO usu = new UsuarioDAO(this);
         boolean b = usu.autenticaUsuario(MenuActivity.login.toLowerCase(), MenuActivity.pass);
         if(b){
             startActivity(new Intent(this, MenuActivity.class));
             finish();
         }else{
-            Toast.makeText(this, "Usuario ou Senha Ivalidos!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Usuario ou Senha Invalidos!", Toast.LENGTH_SHORT).show();
+            pLogin.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -59,10 +59,6 @@ public class EquipamentosActivity extends ListActivity {
             int pending = cursor.getInt(cursor.getColumnIndex(EquipamentoContract.Columnas.INSERT_PENDING));
             int remoto =  cursor.getInt(cursor.getColumnIndex(EquipamentoContract.Columnas.ID_REMOTA));
 
-            AlertDialog.Builder msg = new AlertDialog.Builder(this);
-            msg.setMessage("Série = "+numeroSerie+" Código = "+id+" Estado = " +estado+ " Pending = "+pending + "Remota =" + remoto);
-            msg.show();
-
             item.put("id", id);
             item.put("serial", numeroSerie);
             item.put("patrimonio", patrimonio);

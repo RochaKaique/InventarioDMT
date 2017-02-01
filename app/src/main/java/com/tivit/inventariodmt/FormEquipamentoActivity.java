@@ -1,6 +1,8 @@
 package com.tivit.inventariodmt;
 
 import android.annotation.TargetApi;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,9 +14,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +31,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.Date;
 import java.util.List;
 
+import com.tivit.inventariodmt.RFID.DotR900.OnBtEventListener;
+import com.tivit.inventariodmt.RFID.DotR900.R900;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
@@ -39,11 +45,30 @@ import com.tivit.inventariodmt.dto.StatusDTO;
 import com.tivit.inventariodmt.dto.TipoEquipamentoDTO;
 import com.tivit.inventariodmt.dto.UsuarioDTO;
 
-public class FormEquipamentoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class FormEquipamentoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnBtEventListener {
 
     public static int ENABLE_BLUETOOTH = 1;
     public static int SELECT_PAIRED_DEVICE = 2;
     public static int SELECT_DISCOVERED_DEVICE = 3;
+
+    private R900 leitor;
+    public static final int MSG_ENABLE_LINK_CTRL = 10;
+    public static final int MSG_DISABLE_LINK_CTRL = 11;
+    public static final int MSG_ENABLE_DISCONNECT = 12;
+    public static final int MSG_DISABLE_DISCONNECT = 13;
+    public static final int MSG_SHOW_TOAST = 20;
+    public static final int MSG_REFRESH_LIST_TAG = 22;
+    public static final int MSG_BT_DATA_RECV = 10;
+    private BluetoothAdapter blueAdapter;
+    private BaseAdapter mAdapterTag;
+    private static final int[] TX_DUTY_OFF =
+            {10, 40, 80, 100, 160, 180};
+
+    private static final int[] TX_DUTY_ON =
+            {190, 160, 70, 40, 20};
+
+    private static final String[] TXT_DUTY =
+            {"90%", "80%", "60%", "41%", "20%"};
 
     private EditText serial, patrimonio;
     static TextView statusconexao, recebeRfid;
@@ -63,11 +88,34 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(final Message msg) {
+            switch (msg.what) {
+                case MSG_BT_DATA_RECV:
+                    onNotifyBtDataRecv();
+                    break;
+                case MSG_SHOW_TOAST:
+                    Toast.makeText(FormEquipamentoActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_REFRESH_LIST_TAG:
+                    try {
+                        mAdapterTag.notifyDataSetChanged();
+                        recebeRfid.setText((String.valueOf(leitor.getListaPatrimonio().get(leitor.getListaPatrimonio().size()-1))));
+                        //lblTotalTags.setText(String.valueOf(leitor.getListaPatrimonio()));
+                    } catch (Exception ex) {
+                        Log.d("ERRO", ex.getMessage());
+                    }
+            }
+        }
+    };
+
 
     @Override
-
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        leitor = new R900(this, mHandler, this);
+        mAdapterTag = new TagAdapter(getApplicationContext(), leitor.getListaPatrimonio());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_equipamento);
             this.combos = new PreencheCombosDao(this);
@@ -89,14 +137,14 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
         helper = new DatabaseHelper(this);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
-    @Override
-    protected void onDestroy() {
-        helper.close();
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        helper.close();
+//        super.onDestroy();
+//    }
 
     @TargetApi(Build.VERSION_CODES.N)
     public void salvarEquipamento(View view) {
@@ -187,66 +235,70 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //DISPOSITIVO DE BLUETOOTH
-        if (requestCode == ENABLE_BLUETOOTH) {
-            if (resultCode == RESULT_OK) {
-                statusconexao.setText("Bluetooth ativado.");
-            } else {
-                statusconexao.setText("Bluetooth não ativado.");
-            }
-        } else if (requestCode == SELECT_PAIRED_DEVICE || requestCode == SELECT_DISCOVERED_DEVICE) {
-            if (resultCode == RESULT_OK) {
-                statusconexao.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
-                        + data.getStringExtra("btDevAddress"));
+//        if (requestCode == ENABLE_BLUETOOTH) {
+//            if (resultCode == RESULT_OK) {
+//                statusconexao.setText("Bluetooth ativado.");
+//            } else {
+//                statusconexao.setText("Bluetooth não ativado.");
+//            }
+//        } else if (requestCode == SELECT_PAIRED_DEVICE || requestCode == SELECT_DISCOVERED_DEVICE) {
+//            if (resultCode == RESULT_OK) {
+//                statusconexao.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
+//                        + data.getStringExtra("btDevAddress"));
+//
+//                //connect = new ConnectionThread(data.getStringExtra("btDevAddress"));
+//                //connect.start();
+//            } else {
+//                statusconexao.setText("Nenhum dispositivo selecionado.");
+//            }
+//        }
+//        //LEITOR CÓDIGO DE BARRAS
+//        if (requestCode == 0) {
+//            if (resultCode == RESULT_OK) {
+//                String contents = data.getStringExtra("SCAN_RESULT");
+//                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+//
+//            } else if (resultCode == RESULT_CANCELED) {
+//
+//            }
+//        }
 
-                connect = new ConnectionThread(data.getStringExtra("btDevAddress"));
-                connect.start();
-            } else {
-                statusconexao.setText("Nenhum dispositivo selecionado.");
-            }
-        }
-        //LEITOR CÓDIGO DE BARRAS
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                String contents = data.getStringExtra("SCAN_RESULT");
-                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-
-            } else if (resultCode == RESULT_CANCELED) {
-
-            }
-        }
+        String addressDispositivo = data.getStringExtra("btDevAddress");
+        leitor.conectar(addressDispositivo);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public static Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-           // recebeRfid.clearComposingText();
-            Bundle bundle = msg.getData();
-            byte[] data = bundle.getByteArray("data");
-            String dataString = new String(data);
-
-            if (dataString.equals("---N"))
-                statusconexao.setText("Ocorreu um erro durante a conexão.");
-            else if (dataString.equals("---S")) {
-                statusconexao.setText("Conectado.");
-                isDeviceConnected = true;
-            }
-            else {
-                String strData = new String(data);
-                if(strRfid != strData)
-                    strRfid = strRfid + strData;
-//                recebeRfid.setText("");
-                recebeRfid.setText(strRfid.toUpperCase());
-                if(strRfid != "" && strData.length() < 10)
-                    numLeituras ++;
-                if(numLeituras == 2) {
-                    strRfid = "";
-                    numLeituras = 0;
-                } else if (numLeituras == 0)
-                    strRfid = "";
-            }
-        }
-    };
+//    public static Handler handler = new Handler() {
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//           // recebeRfid.clearComposingText();
+//            Bundle bundle = msg.getData();
+//            byte[] data = bundle.getByteArray("data");
+//            String dataString = new String(data);
+//
+//            if (dataString.equals("---N"))
+//                statusconexao.setText("Ocorreu um erro durante a conexão.");
+//            else if (dataString.equals("---S")) {
+//                statusconexao.setText("Conectado.");
+//                isDeviceConnected = true;
+//            }
+//            else {
+//                String strData = new String(data);
+//                if(strRfid != strData)
+//                    strRfid = strRfid + strData;
+////                recebeRfid.setText("");
+//                recebeRfid.setText(strRfid.toUpperCase());
+//                if(strRfid != "" && strData.length() < 10)
+//                    numLeituras ++;
+//                if(numLeituras == 2) {
+//                    strRfid = "";
+//                    numLeituras = 0;
+//                } else if (numLeituras == 0)
+//                    strRfid = "";
+//            }
+//        }
+//    };
 
     public void habilitaLerRfid(View view) {
         strRfid = "";
@@ -258,7 +310,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     }
 
     public void enviarMensagem(String mensagem) {
-        byte[] data = mensagem.getBytes();
+        byte[] data = "22".getBytes();
         connect.write(data);
     }
 
@@ -318,44 +370,9 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
         patrimonio.setText("");
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "FormEquipamento Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.tivit.inventariodmt/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "FormEquipamento Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.tivit.inventariodmt/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+    private void showToastByOtherThread(String msg, int time) {
+        mHandler.removeMessages(MSG_SHOW_TOAST);
+        mHandler.sendMessage(mHandler.obtainMessage(MSG_SHOW_TOAST, time, 0, msg));
     }
 
     @Override
@@ -369,8 +386,70 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
         }
     }
 
+    private void setEnabledLinkCtrl(boolean bEnable) {
+        if (bEnable)
+            mHandler.sendEmptyMessageDelayed(MSG_ENABLE_LINK_CTRL, 50);
+        else
+            mHandler.sendEmptyMessageDelayed(MSG_DISABLE_LINK_CTRL, 50);
+    }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onNotifyBtDataRecv() {
+
+        if (leitor == null)
+            return;
+
+        try {
+            leitor.leitura();
+            //mHandler.sendEmptyMessage(MSG_REFRESH_LIST_TAG);
+        }
+        catch (Exception ex) {
+            Log.d("ERRO", ex.getMessage());
+        }
+    }
+
+    @Override
+    public void onBtFoundNewDevice(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onBtScanCompleted() {
+
+    }
+
+    @Override
+    public void onBtConnected(BluetoothDevice device) {
+        setEnabledLinkCtrl(true);
+
+        showToastByOtherThread("Conectou: " + leitor.getDispositivo().getName(), Toast.LENGTH_SHORT);
+        leitor.sendCmdOpenInterface1();
+
+        leitor.sendSettingTxCycle(TX_DUTY_ON[0], TX_DUTY_OFF[0]);
+    }
+
+    @Override
+    public void onBtDisconnected(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onBtConnectFail(BluetoothDevice device, String msg) {
+
+    }
+
+    @Override
+    public void onBtDataSent(byte[] data) {
+
+    }
+
+    @Override
+    public void onBtDataTransException(BluetoothDevice device, String msg) {
 
     }
     /*@Override

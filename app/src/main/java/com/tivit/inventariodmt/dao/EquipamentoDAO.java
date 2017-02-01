@@ -15,6 +15,8 @@ public class EquipamentoDAO {
     private DatabaseHelper helper;
     private SQLiteDatabase db;
 
+    public EquipamentoDAO(){}
+
     public EquipamentoDAO(Context context) {
         helper = new DatabaseHelper(context);
     }
@@ -63,4 +65,6 @@ public class EquipamentoDAO {
 
         long resultado = db.insert("verificacao", null, value);
     }
+
+
 }
