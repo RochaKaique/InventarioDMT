@@ -233,7 +233,7 @@ public class PreencheCombosDao {
     public Cursor selcionaPorRfid(String rfid)
     {
         //rfid = rfid.toUpperCase().replace("\n","").replace("\r","");
-        String[] selecArgs = new String[]{rfid.replace("\n","").replace("\r","").toUpperCase().trim()};
+        String[] selecArgs = new String[]{rfid};
         String sql = "SELECT ic.inv_fs_ic_RFID, ic.inv_fs_ic_numero_serie, tp.inv_FS_TP_Nome_Equipamento, fab.inv_FS_Fab_Nome_Fabricante, modd.inv_FS_Mod_Nome_Modelo, loc.inv_FS_Loc_Descricao FROM inv_fs_item_config ic " +
                 "INNER JOIN inv_FS_Localidade loc ON loc.inv_FS_Loc_Id_Localidade = ic.inv_fs_ic_Id_Localidade " +
                 "INNER JOIN inv_FS_Fabricante fab ON fab.inv_FS_Fab_Id_Fabricante = ic.inv_fs_ic_Id_Fabricante " +
@@ -245,21 +245,4 @@ public class PreencheCombosDao {
 
         return c;
     }
-
-//    public List<UsuarioDTO> listarUsuarios() {
-//        List<UsuarioDTO> lU = new ArrayList<>();
-//
-//        Cursor cursor = getDb().rawQuery("SELECT inv_FS_usf_id_usuario, inv_FS_usf_Nome FROM inv_FS_Usuario_Final", null);
-//        cursor.moveToFirst();
-//        if (cursor.getCount() > 0) {
-//            do {
-//                UsuarioDTO u = new UsuarioDTO();
-//                u.setInv_fs_ic_Id_Organizacao(cursor.getInt(0));
-//                u.setInv_FS_usf_Nome(cursor.getString(2));
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        return lU;
-//    }
 }

@@ -328,35 +328,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
       //INSERÇÕES DE TESTE NO BANCO
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (1, 'Desktop');");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (2, 'Notebook');");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_Perfil_Usuario (inv_PU_Nome_Perfil_Usuario) VALUES ('Padrao')");
-//        try {
-//            sqLiteDatabase.execSQL("INSERT INTO inv_Usuario (inv_us_Login, inv_us_Senha, inv_us_Perfil) VALUES ('alexandre', '"+ Criptografia.encrypt("1234")+"', 1)");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (1, 'TI');");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (2, 'Fiscal');");
-//
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (1, 'Dell')");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (2, 'HP')");
-//
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (1, 'Em Uso');");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (2, 'Manutenção');");
-//
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
-//                "VALUES (1, 'Pavillion', 2, 2015)");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
-//                "VALUES (2, 'Vostro', 1, 2015);");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
-//                "VALUES (3, 'Optiplex', 1, 2015);");
-//
-//
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (1, 'CENESP', 'São Paulo')");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (2, 'Ipiranga', 'São Paulo')");
-//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (3, 'Transamerica', 'São Paulo')");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (1, 'Desktop');");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (2, 'Notebook');");
+        sqLiteDatabase.execSQL("INSERT INTO inv_Perfil_Usuario (inv_PU_Nome_Perfil_Usuario) VALUES ('Padrao')");
+        try {
+            sqLiteDatabase.execSQL("INSERT INTO inv_Usuario (inv_us_Login, inv_us_Senha, inv_us_Perfil) VALUES ('kaique.rocha', '"+ Criptografia.encrypt("1012")+"', 1)");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (1, 'TI');");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (2, 'Fiscal');");
+
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (1, 'Dell')");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (2, 'HP')");
+
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (1, 'Em Uso');");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (2, 'Manutenção');");
+
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
+                "VALUES (1, 'Pavillion', 2, 2015)");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
+                "VALUES (2, 'Vostro', 1, 2015);");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
+                "VALUES (3, 'Optiplex', 1, 2015);");
+
+
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (1, 'CENESP', 'São Paulo')");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (2, 'Ipiranga', 'São Paulo')");
+        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (3, 'Transamerica', 'São Paulo')");
     }
 
     @Override

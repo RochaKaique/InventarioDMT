@@ -34,35 +34,6 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="19dp"
-        android:id="@+id/textInputLayout2">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="53dp"
-            android:maxLines="1"
-            android:imeOptions="actionNext"
-            android:nextFocusForward="@+id/txtSenha"
-            android:id="@+id/txtLogin"
-            android:hint="Usuário"
-            android:inputType="textWebEmailAddress"
-            android:layout_below="@+id/imageView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:focusable="true"
-            android:text="kaique.rocha" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_below="@+id/textInputLayout2"
         android:layout_alignParentLeft="true"
@@ -98,6 +69,35 @@
         android:layout_marginBottom="26dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:id="@+id/textInputLayout2"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="53dp"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@+id/txtSenha"
+            android:id="@+id/txtLogin"
+            android:hint="Usuário"
+            android:inputType="textWebEmailAddress"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:focusable="true"
+            android:text="kaique.rocha" />
+    </android.support.design.widget.TextInputLayout>
 
 
 </RelativeLayout>

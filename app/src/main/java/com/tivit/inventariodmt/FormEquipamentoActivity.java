@@ -28,12 +28,15 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.text.Normalizer;
 import java.util.Date;
 import java.util.List;
 
 import com.tivit.inventariodmt.RFID.DotR900.OnBtEventListener;
 import com.tivit.inventariodmt.RFID.DotR900.R900;
+import com.tivit.inventariodmt.RFID.DotR900.R900Protocol;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
+import com.tivit.inventariodmt.dao.EquipamentoDAO;
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
@@ -59,7 +62,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     public static final int MSG_SHOW_TOAST = 20;
     public static final int MSG_REFRESH_LIST_TAG = 22;
     public static final int MSG_BT_DATA_RECV = 10;
-    private BluetoothAdapter blueAdapter;
+//    private BluetoothAdapter blueAdapter;
     private BaseAdapter mAdapterTag;
     private static final int[] TX_DUTY_OFF =
             {10, 40, 80, 100, 160, 180};
@@ -77,7 +80,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     private DatabaseHelper helper;
     private List equipamentos, tipoEquipamentos;
     PreencheCombosDao combos;
-    ConnectionThread connect = new ConnectionThread();
+//    ConnectionThread connect = new ConnectionThread();
     private static boolean isDeviceConnected = false;
     ContentValues values = new ContentValues();
     private static int numLeituras = 0;
@@ -88,7 +91,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-
+/*O handler é um componente que fica sempre ativo e é chamado toda vez que o bluetooth retorna uma resposta para a activity*/
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(final Message msg) {
@@ -116,6 +119,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     public void onCreate(Bundle savedInstanceState) {
         leitor = new R900(this, mHandler, this);
         mAdapterTag = new TagAdapter(getApplicationContext(), leitor.getListaPatrimonio());
+//        this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_equipamento);
             this.combos = new PreencheCombosDao(this);
@@ -140,11 +144,11 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
 
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        helper.close();
-//        super.onDestroy();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        leitor.finalize();
+    }
 
     @TargetApi(Build.VERSION_CODES.N)
     public void salvarEquipamento(View view) {
@@ -190,128 +194,36 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
             msg.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i){
-
-                    getContentResolver().insert(EquipamentoContract.CONTENT_URI,values);
-                    //SyncAdapter.sincronizarAhora(getApplicationContext(), true);
-                    limpaCampos();
-                    Toast.makeText(getApplicationContext(),getString(R.string.equipament_save),Toast.LENGTH_LONG).show();
+                    EquipamentoDAO equipamentoDAO = new EquipamentoDAO(FormEquipamentoActivity.this);
+                    if(!equipamentoDAO.findByRfid(recebeRfid.getText().toString().trim())) {
+                        getContentResolver().insert(EquipamentoContract.CONTENT_URI, values);
+                        //SyncAdapter.sincronizarAhora(getApplicationContext(), true);
+                        limpaCampos();
+                        Toast.makeText(getApplicationContext(), getString(R.string.equipament_save), Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Já existe um equipamento com este RFID", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
             msg.show();
-
-
-            //long resultado = db.insert("Inv_FS_Item_config", null, values);
-            //getContentResolver().insert(EquipamentoContract.CONTENT_URI,values);
-
-            /*if (resultado != -1) {
-                Toast.makeText(this, getString(R.string.equipament_save), Toast.LENGTH_LONG).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.confirm).setMessage(R.string.keep_location);
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        comboLocalidade();
-                    }
-                });
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                });
-                builder.show();
-                limpaCampos();
-            } else
-                Toast.makeText(this, getString(R.string.error_save), Toast.LENGTH_SHORT).show();
-            }*/
         }
     }
 
     public void verificaConexoes(View view) {
 
-        Intent searchPairedDevicesIntent = new Intent(this, DiscoveredDevices.class);
-        startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
+//        if (blueAdapter.isEnabled()) {
+            Intent intent = new Intent(this, DiscoveredDevices.class);
+            startActivityForResult(intent, BluetoothActivity.SELECT_DISCOVERED_DEVICE);
+//        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //DISPOSITIVO DE BLUETOOTH
-//        if (requestCode == ENABLE_BLUETOOTH) {
-//            if (resultCode == RESULT_OK) {
-//                statusconexao.setText("Bluetooth ativado.");
-//            } else {
-//                statusconexao.setText("Bluetooth não ativado.");
-//            }
-//        } else if (requestCode == SELECT_PAIRED_DEVICE || requestCode == SELECT_DISCOVERED_DEVICE) {
-//            if (resultCode == RESULT_OK) {
-//                statusconexao.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
-//                        + data.getStringExtra("btDevAddress"));
-//
-//                //connect = new ConnectionThread(data.getStringExtra("btDevAddress"));
-//                //connect.start();
-//            } else {
-//                statusconexao.setText("Nenhum dispositivo selecionado.");
-//            }
-//        }
-//        //LEITOR CÓDIGO DE BARRAS
-//        if (requestCode == 0) {
-//            if (resultCode == RESULT_OK) {
-//                String contents = data.getStringExtra("SCAN_RESULT");
-//                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-//
-//            } else if (resultCode == RESULT_CANCELED) {
-//
-//            }
-//        }
 
         String addressDispositivo = data.getStringExtra("btDevAddress");
         leitor.conectar(addressDispositivo);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-//    public static Handler handler = new Handler() {
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//           // recebeRfid.clearComposingText();
-//            Bundle bundle = msg.getData();
-//            byte[] data = bundle.getByteArray("data");
-//            String dataString = new String(data);
-//
-//            if (dataString.equals("---N"))
-//                statusconexao.setText("Ocorreu um erro durante a conexão.");
-//            else if (dataString.equals("---S")) {
-//                statusconexao.setText("Conectado.");
-//                isDeviceConnected = true;
-//            }
-//            else {
-//                String strData = new String(data);
-//                if(strRfid != strData)
-//                    strRfid = strRfid + strData;
-////                recebeRfid.setText("");
-//                recebeRfid.setText(strRfid.toUpperCase());
-//                if(strRfid != "" && strData.length() < 10)
-//                    numLeituras ++;
-//                if(numLeituras == 2) {
-//                    strRfid = "";
-//                    numLeituras = 0;
-//                } else if (numLeituras == 0)
-//                    strRfid = "";
-//            }
-//        }
-//    };
-
-    public void habilitaLerRfid(View view) {
-        strRfid = "";
-        limpaRfid();
-        if(isDeviceConnected)
-            enviarMensagem("L");
-        else
-            new AlertDialog.Builder(FormEquipamentoActivity.this).setMessage("Conecte-se ao Leitor RFID!").setNeutralButton("OK",null).show();
-    }
-
-    public void enviarMensagem(String mensagem) {
-        byte[] data = "22".getBytes();
-        connect.write(data);
     }
 
     public void limpaRfid() {
@@ -429,8 +341,10 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
 
         showToastByOtherThread("Conectou: " + leitor.getDispositivo().getName(), Toast.LENGTH_SHORT);
         leitor.sendCmdOpenInterface1();
+        sendSettingTxPower(0);
+        leitor.setOpMode(false,false,200,false);
+        leitor.sendSettingTxCycle(TX_DUTY_ON[4], TX_DUTY_OFF[4]);
 
-        leitor.sendSettingTxCycle(TX_DUTY_ON[0], TX_DUTY_OFF[0]);
     }
 
     @Override
@@ -452,9 +366,20 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     public void onBtDataTransException(BluetoothDevice device, String msg) {
 
     }
-    /*@Override
-    public void onBackPressed()
+
+    public void sendBeep( int f_on )
     {
-        connect.unpairAllDevices();
-    }*/
+        if( leitor != null )
+        {
+            leitor.sendData(R900Protocol.makeProtocol( R900Protocol.CMD_BEEP,
+                    new int[]{ f_on } ) );
+        }
+    }
+    public void sendSettingTxPower( int a )
+    {
+        if( leitor != null )
+        {
+            leitor.sendData(R900Protocol.makeProtocol( R900Protocol.CMD_SET_TX_POWER, new int[]{ a } ) );
+        }
+    }
 }

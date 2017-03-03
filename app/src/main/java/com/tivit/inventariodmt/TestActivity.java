@@ -15,9 +15,6 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.tivit.inventariodmt.RFID.DotR900.OnBtEventListener;
 import com.tivit.inventariodmt.RFID.DotR900.R900;
 import com.tivit.inventariodmt.RFID.DotR900.R900Manager;
@@ -152,7 +149,7 @@ public class TestActivity extends AppCompatActivity implements OnBtEventListener
         mR900Manager = new R900(this, mHandler, this);
         mAdapterTag = new TagAdapter(getApplicationContext(), mR900Manager.getListaPatrimonio());
         setContentView(R.layout.activity_test);
-        lblTotalTags = (TextView) findViewById(R.id.lblCountTags);
+//        lblTotalTags = (TextView) findViewById(R.id.lblCountTags);
         this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
         super.onCreate(savedInstanceState);
 
@@ -165,14 +162,45 @@ public class TestActivity extends AppCompatActivity implements OnBtEventListener
             startActivityForResult(intent, BluetoothActivity.SELECT_DISCOVERED_DEVICE);
         }
 
+
+
+    }
+
+    public void ler(View v){
+//        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+//        scanIntegrator.setPrompt("Scan");
+//        scanIntegrator.setBeepEnabled(true);
+//        //The following line if you want QR code
+//        scanIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+//        scanIntegrator.setCaptureActivity(CaptureActivity.class);
+//        scanIntegrator.setOrientationLocked(true);
+//        scanIntegrator.setBarcodeImageEnabled(true);
+//        scanIntegrator.initiateScan();
     }
 
     @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        String addressDispositivo = data.getStringExtra("btDevAddress");
+//        mR900Manager.conectar(addressDispositivo);
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        String addressDispositivo = data.getStringExtra("btDevAddress");
-        mR900Manager.conectar(addressDispositivo);
         super.onActivityResult(requestCode, resultCode, data);
+//        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//        if (scanningResult != null) {
+//            String scanContent = "";
+//            String scanFormat = "";
+//            if (scanningResult.getContents() != null) {
+//                scanContent = scanningResult.getContents().toString();
+//                scanFormat = scanningResult.getFormatName().toString();
+//            }
+//
+//            Toast.makeText(this, scanContent, Toast.LENGTH_SHORT).show();
+//
+//        }else{
+//            Toast.makeText(this,"Nothing scanned",Toast.LENGTH_SHORT).show();
+//        }
     }
 
 

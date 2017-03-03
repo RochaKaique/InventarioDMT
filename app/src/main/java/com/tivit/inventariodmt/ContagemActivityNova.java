@@ -2,6 +2,7 @@ package com.tivit.inventariodmt;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,11 +20,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tivit.inventariodmt.RFID.DotR900.OnBtEventListener;
+import com.tivit.inventariodmt.RFID.DotR900.R900;
+import com.tivit.inventariodmt.RFID.DotR900.R900Protocol;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
 import com.tivit.inventariodmt.dao.EquipamentoDAO;
 import com.tivit.inventariodmt.dao.PreencheCombosDao;
@@ -42,11 +47,29 @@ import java.util.TreeSet;
 
 import static com.tivit.inventariodmt.R.styleable.View;
 
-public class ContagemActivityNova extends AppCompatActivity {
+public class ContagemActivityNova extends AppCompatActivity implements OnBtEventListener {
 
     public static int ENABLE_BLUETOOTH = 1;
     public static int SELECT_PAIRED_DEVICE = 2;
     public static int SELECT_DISCOVERED_DEVICE = 3;
+
+    private R900 leitor;
+    public static final int MSG_ENABLE_LINK_CTRL = 10;
+    public static final int MSG_DISABLE_LINK_CTRL = 11;
+    public static final int MSG_ENABLE_DISCONNECT = 12;
+    public static final int MSG_DISABLE_DISCONNECT = 13;
+    public static final int MSG_SHOW_TOAST = 20;
+    public static final int MSG_REFRESH_LIST_TAG = 22;
+    public static final int MSG_BT_DATA_RECV = 10;
+    private BaseAdapter mAdapterTag;
+    private static final int[] TX_DUTY_OFF =
+            {10, 40, 80, 100, 160, 180};
+
+    private static final int[] TX_DUTY_ON =
+            {190, 160, 70, 40, 20};
+
+    private static final String[] TXT_DUTY =
+            {"90%", "80%", "60%", "41%", "20%"};
 
     ProgressBar progressBar;
     TextView llblInfo;
@@ -85,7 +108,7 @@ public class ContagemActivityNova extends AppCompatActivity {
     ConnectionThreadContagem connect;
     private static String strRfid = "";
     private static int numLeituras = 0;
-    private BluetoothAdapter blueAdapter;
+//    private BluetoothAdapter blueAdapter;
     private boolean verificaProgress;
     static Set<String> rfids;
     static Set<String> rfidsBanco;
@@ -96,6 +119,8 @@ public class ContagemActivityNova extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        leitor = new R900(this, mHandler, this);
+        mAdapterTag = new TagAdapter(getApplicationContext(), leitor.getListaPatrimonio());
         this.equip = new PreencheCombosDao(this);
         Utilidades.setTaskBarColored(this);
         super.onCreate(savedInstanceState);
@@ -116,13 +141,13 @@ public class ContagemActivityNova extends AppCompatActivity {
         txtNaoEncontrados = (TextView) findViewById(R.id.txtFaltantes);
         txtNaoInventLoc = (TextView) findViewById(R.id.txtNaoInventariadosLoc);
 
-        this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
+//        this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
         this.verificaProgress = false;
         this.rfids = new TreeSet<>();
         this.rfidValido = new TreeSet<>();
         this.rfidInvalido = new TreeSet<>();
         this.rfidsBanco = new TreeSet<>();
-        this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
+//        this.blueAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
     private SQLiteDatabase getDb() {
@@ -136,10 +161,10 @@ public class ContagemActivityNova extends AppCompatActivity {
 
     public void conectaLeitor(View v)
     {
-        if (blueAdapter.isEnabled()) {
+//        if (blueAdapter.isEnabled()) {
             Intent intent = new Intent(this, DiscoveredDevices.class);
             startActivityForResult(intent, BluetoothActivity.SELECT_DISCOVERED_DEVICE);
-        }
+//        }
         if(lblLeitor.getText() != "Desconectado." && lblLeitor.getText() != "Nenhum dispositivo selecionado.") {
             btnFinaliza.setVisibility(android.view.View.VISIBLE);
             btnConecta.setVisibility(android.view.View.INVISIBLE);
@@ -182,56 +207,32 @@ public class ContagemActivityNova extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == ENABLE_BLUETOOTH) {
-            if (resultCode == RESULT_OK) {
-                lblLeitor.setText("Bluetooth ativado.");
-            } else {
-                lblLeitor.setText("Bluetooth não ativado.");
-            }
-        } else if (requestCode == SELECT_PAIRED_DEVICE || requestCode == SELECT_DISCOVERED_DEVICE) {
-            if (resultCode == RESULT_OK) {
-                lblLeitor.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
-                        + data.getStringExtra("btDevAddress"));
-
-                connect = new ConnectionThreadContagem(data.getStringExtra("btDevAddress"));
-                connect.start();
-            } else {
-                lblLeitor.setText("Nenhum dispositivo selecionado.");
-            }
-        }
+        String addressDispositivo = data.getStringExtra("btDevAddress");
+        leitor.conectar(addressDispositivo);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public static Handler handler = new Handler() {
-
+    private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-
-            Bundle bundle = msg.getData();
-            byte[] data = bundle.getByteArray("data");
-            String dataString = new String(data);
-
-            if (dataString.equals("---N"))
-                lblLeitor.setText("Ocorreu um erro durante a conexão.");
-            else if (dataString.equals("---S")) {
-                lblLeitor.setText("Conectado.");
-                isDeviceConnected = true;
-            }
-            else {
-                String strData = new String(data);
-                if(strRfid != strData)
-                    strRfid = strRfid + strData;
-                if(strRfid != "" && strData.length() < 10)
-                    numLeituras ++;
-                if(numLeituras == 2) {
-                    rfids.add(strRfid);
-                    strRfid = "";
-                    numLeituras = 0;
-                } else if (numLeituras == 0)
-                    strRfid = "";
+        public void handleMessage(final Message msg) {
+            switch (msg.what) {
+                case MSG_BT_DATA_RECV:
+                    onNotifyBtDataRecv();
+                    break;
+                case MSG_SHOW_TOAST:
+                    Toast.makeText(ContagemActivityNova.this, (String) msg.obj, Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_REFRESH_LIST_TAG:
+                    try {
+                        mAdapterTag.notifyDataSetChanged();
+                        rfids.add(String.valueOf(leitor.getListaPatrimonio().get(leitor.getListaPatrimonio().size()-1)));
+                    } catch (Exception ex) {
+                        Log.d("ERRO", ex.getMessage());
+                    }
             }
         }
     };
+
 
     public void finalizarContagem() {
 //      System.out.println("F I N A L I Z A R");
@@ -293,7 +294,7 @@ public class ContagemActivityNova extends AppCompatActivity {
         cCount.close();
         for (String i : rfids) {
             String selection = EquipamentoContract.Columnas.RFID + " = ?";
-            String[] selectionArgs = new String[]{i.toUpperCase().replace("\n", "").replace("\r", "")};
+            String[] selectionArgs = new String[]{i};
             Cursor c = getContentResolver().query(uri, PROJECTION, selection, selectionArgs, null);
 
 
@@ -302,6 +303,7 @@ public class ContagemActivityNova extends AppCompatActivity {
             } else {
                 rfidInvalido.add(i);
             }
+            Log.i("RFID", i);
             c.close();
         }
     }
@@ -390,7 +392,7 @@ public class ContagemActivityNova extends AppCompatActivity {
                                 "</tr>");
             }while(c.moveToNext());
 
-            rfidsBanco.remove(i.replace("\n","").replace("\r","").toUpperCase());
+            rfidsBanco.remove(i);
         }
 
 
@@ -461,4 +463,89 @@ public class ContagemActivityNova extends AppCompatActivity {
         }
 
     }
+    //    region MÉTODOS BLUETOOTH
+    @Override
+    public void onBtFoundNewDevice(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onBtScanCompleted() {
+
+    }
+
+    @Override
+    public void onBtConnected(BluetoothDevice device) {
+        setEnabledLinkCtrl(true);
+        showToastByOtherThread("Conectou: " + leitor.getDispositivo().getName(), Toast.LENGTH_SHORT);
+        leitor.sendCmdOpenInterface1();
+        sendBeep(0);
+        leitor.sendSettingTxCycle(TX_DUTY_ON[0], TX_DUTY_OFF[0]);
+    }
+
+    @Override
+    public void onBtDisconnected(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onBtConnectFail(BluetoothDevice device, String msg) {
+
+    }
+
+    @Override
+    public void onBtDataSent(byte[] data) {
+
+    }
+
+    @Override
+    public void onBtDataTransException(BluetoothDevice device, String msg) {
+
+    }
+
+    @Override
+    public void onNotifyBtDataRecv() {
+
+        if (leitor == null)
+            return;
+
+        try {
+            leitor.leitura();
+            //mHandler.sendEmptyMessage(MSG_REFRESH_LIST_TAG);
+        }
+        catch (Exception ex) {
+            Log.d("ERRO", ex.getMessage());
+        }
+
+    }
+//    endregion
+
+    //    region METODOS LEITOR
+    private void setEnabledLinkCtrl(boolean bEnable) {
+        if (bEnable)
+            mHandler.sendEmptyMessageDelayed(MSG_ENABLE_LINK_CTRL, 50);
+        else
+            mHandler.sendEmptyMessageDelayed(MSG_DISABLE_LINK_CTRL, 50);
+    }
+    private void showToastByOtherThread(String msg, int time) {
+        mHandler.removeMessages(MSG_SHOW_TOAST);
+        mHandler.sendMessage(mHandler.obtainMessage(MSG_SHOW_TOAST, time, 0, msg));
+    }
+
+    public void sendSettingTxPower( int a )
+    {
+        if( leitor != null )
+        {
+            leitor.sendData(R900Protocol.makeProtocol( R900Protocol.CMD_SET_TX_POWER, new int[]{ a } ) );
+        }
+    }
+    public void sendBeep( int f_on )
+    {
+        if( leitor != null )
+        {
+            leitor.sendData(R900Protocol.makeProtocol( R900Protocol.CMD_BEEP,
+                    new int[]{ f_on } ) );
+        }
+    }
+//    endregion
 }

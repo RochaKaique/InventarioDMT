@@ -156,6 +156,14 @@ public class R900 extends Leitor implements ILeitor {
         sendData(R900Protocol.makeProtocol(mLastCmd, (int[]) null));
     }
 
+    public void setOpMode( boolean singleTag, boolean useMask, int timeout, boolean querySelected  )
+    {
+        mSingleTag = singleTag;
+        mUseMask = useMask;
+        mTimeout = timeout;
+        mQuerySelected = querySelected;
+    }
+
     private void pararComunicacaoLeitor() {
         sendData(R900Protocol.BYE);
     }

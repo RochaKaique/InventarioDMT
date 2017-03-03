@@ -40,8 +40,8 @@ public class EquipamentoDAO {
     }
 
     public boolean findByRfid(String rfid) {
-        Cursor cursor = getDb().rawQuery("SELECT * FROM Inv_FS_Item_config WHERE inv_fs_ic_RFID = " +rfid+ ";", null);
-        if(cursor.getCount() < 0) {
+        Cursor cursor = getDb().rawQuery("SELECT * FROM Inv_FS_Item_config WHERE inv_fs_ic_RFID = '" +rfid+ "';", null);
+        if(cursor.getCount() <= 0) {
             return false;
         }
         return true;

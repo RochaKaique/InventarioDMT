@@ -197,7 +197,7 @@ public class ConnectionThreadContagem extends Thread {
         Bundle bundle = new Bundle();
         bundle.putByteArray("data", data);
         message.setData(bundle);
-        ContagemActivityNova.handler.sendMessage(message);
+//        ContagemActivityNova.handler.sendMessage(message);
     }
 
     /*  Método utilizado pela Activity principal para transmitir uma mensagem ao

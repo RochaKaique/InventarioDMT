@@ -17,14 +17,14 @@ public class Constantes {
     /**
      * Dirección IP de genymotion o AVD
      */
-    private static final String IP = "http://10.255.12.197";
+    private static final String IP = "http://192.168.49.213";
 
     /**
      * URLs del Web Service
      */
 
     public static final String GET_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/equipamento/listarPorLocalidade/";
-    public static final String INSERT_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/equipamento/cadastrar_equipamento/"+ MenuActivity.login + "/";
+    public static final String INSERT_URL = IP + PORTA + "/InventarioDMT_Ws/webresources/equipamento/cadastrar_equipamento/"+ MenuActivity.login;
 
     public static final String GET_LOCALIDADE = IP + PORTA + "/InventarioDMT_Ws/webresources/localidade/listar/"+ MenuActivity.login + "/";
     public static final String GET_DEPARTAMENTO = IP + PORTA +"/InventarioDMT_Ws/webresources/departamento/listar/"+ MenuActivity.login + "/";

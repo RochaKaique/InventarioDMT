@@ -146,27 +146,27 @@ public class BluetoothActivity extends AppCompatActivity {//implements OnBtEvent
 //        connect.write(data);
 //    }
 
-    public static Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
-            Bundle bundle = msg.getData();
-            byte[] data = bundle.getByteArray("data");
-            String dataString= new String(data);
-
-            if(dataString.equals("---N"))
-                statusconexao.setText("Ocorreu um erro durante a conexão D:");
-            else if(dataString.equals("---S"))
-                statusconexao.setText("Conectado :D");
-            else {
-                String resposta = new String(data);
-                resposta.replace("\n", "");
-                resposta.replace("\t", "");
-                resposta.replace("\r", "");
-                textSpace.setText(resposta);
-            }
-        }
-    };
+//    public static Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//
+//            Bundle bundle = msg.getData();
+//            byte[] data = bundle.getByteArray("data");
+//            String dataString= new String(data);
+//
+//            if(dataString.equals("---N"))
+//                statusconexao.setText("Ocorreu um erro durante a conexão D:");
+//            else if(dataString.equals("---S"))
+//                statusconexao.setText("Conectado :D");
+//            else {
+//                String resposta = new String(data);
+//                resposta.replace("\n", "");
+//                resposta.replace("\t", "");
+//                resposta.replace("\r", "");
+//                textSpace.setText(resposta);
+//            }
+//        }
+//    };
     //endregion
 //region CLASSE ATUAL
 //    public static String TAG = "BluetoothActivity";

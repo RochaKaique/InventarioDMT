@@ -13,15 +13,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.itextpdf.text.DocumentException;
-import com.tivit.inventariodmt.dao.GeradorPdf;
 import com.tivit.inventariodmt.dataconsistency.sync.SyncAdapter;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
-
-import java.io.IOException;
 
 public class MenuActivity extends AppCompatActivity implements Runnable{
 
@@ -122,6 +116,9 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
                 }
 
 
+                break;
+            case R.id.tvQRcode:
+                startActivity(new Intent(this, QRCodeActivity.class));
                 break;
             case R.id.tvUploadDB:
                 if(Utilidades.isConnected(getApplicationContext())) {
