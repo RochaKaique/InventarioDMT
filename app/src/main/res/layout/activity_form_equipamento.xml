@@ -68,24 +68,51 @@
             android:layout_height="wrap_content"
             android:text="@string/serial" />
 
-        <EditText
-            android:id="@+id/etSerial"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:longClickable="true"
-            android:inputType="textWebEmailAddress"/>
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnCodeSerialnumbem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Codigo de Barras"
+                android:onClick="lerCodigoBarrasSerial"/>
+
+            <EditText
+                android:id="@+id/etSerial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:inputType="textWebEmailAddress"
+                android:longClickable="true" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/patrimony" />
 
-        <EditText
-            android:id="@+id/etPatrimonio"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textWebEmailAddress"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnCodePatrimonio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="lerCodigoBarrasPatrimonio"
+                android:text="Codigo de Barras" />
+
+            <EditText
+                android:id="@+id/etPatrimonio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textWebEmailAddress" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

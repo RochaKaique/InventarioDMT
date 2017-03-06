@@ -207,8 +207,10 @@ public class ContagemActivityNova extends AppCompatActivity implements OnBtEvent
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String addressDispositivo = data.getStringExtra("btDevAddress");
-        leitor.conectar(addressDispositivo);
+        if (resultCode == RESULT_OK) {
+            String addressDispositivo = data.getStringExtra("btDevAddress");
+            leitor.conectar(addressDispositivo);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

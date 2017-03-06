@@ -55,6 +55,7 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     public static int SELECT_DISCOVERED_DEVICE = 3;
 
     private R900 leitor;
+    public String solicitanteLeituraCode;
     public static final int MSG_ENABLE_LINK_CTRL = 10;
     public static final int MSG_DISABLE_LINK_CTRL = 11;
     public static final int MSG_ENABLE_DISCONNECT = 12;
@@ -221,14 +222,43 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        String addressDispositivo = data.getStringExtra("btDevAddress");
-        leitor.conectar(addressDispositivo);
-        super.onActivityResult(requestCode, resultCode, data);
+        String addressDispositivo = "";
+        addressDispositivo = data.getStringExtra("btDevAddress");
+        String tipoDeCode = data.getStringExtra("barcodeFormat");
+        String valorNoCode = data.getStringExtra("barcodeValue");
+        if (resultCode == RESULT_OK) {
+            if (addressDispositivo != null)
+                leitor.conectar(addressDispositivo);
+            else if (!tipoDeCode.equals(null) && !valorNoCode.equals(null)) {
+                if (tipoDeCode.equalsIgnoreCase("QR_Code")) {
+                    Toast.makeText(this, "QRCode não se aplica neste campo", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (solicitanteLeituraCode.equalsIgnoreCase("Patrimonio"))
+                        patrimonio.setText(valorNoCode);
+                    else if (solicitanteLeituraCode.equalsIgnoreCase("Serialnumber"))
+                        serial.setText(valorNoCode);
+                }
+            }
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void limpaRfid() {
         recebeRfid.setText("");
 
+    }
+
+    public void lerCodigoBarrasPatrimonio(View v){
+        Intent intent = new Intent(this, CodeReader.class);
+        startActivityForResult(intent,3);
+        solicitanteLeituraCode = "Patrimonio";
+    }
+
+    public void lerCodigoBarrasSerial(View v){
+        Intent intent = new Intent(this, CodeReader.class);
+        startActivityForResult(intent,3);
+        solicitanteLeituraCode = "Serialnumber";
     }
 
     public void iniciaCombos() {

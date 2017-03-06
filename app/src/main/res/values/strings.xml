@@ -54,7 +54,7 @@
     <string name="connect">Conectar</string>
     <string name="connection_read">Conexão ao leitor</string>
     <string name="rfid_read">Ler RFID</string>
-    <string name="phrase_rfid">Clique no botão "LER RFID" e aproxime a TAG do sensor.</string>
+    <string name="phrase_rfid">Acione o leitor manualmete e aproxime a TAG do sensor.</string>
     <string name="id">Código</string>
     <string name="confirm">Confirme</string>
     <string name="keep_location">Gostaria de manter a localidade?</string>

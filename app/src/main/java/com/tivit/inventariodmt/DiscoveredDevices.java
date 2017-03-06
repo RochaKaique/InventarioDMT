@@ -98,8 +98,18 @@ public class DiscoveredDevices extends ListActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("btDevName", "");
+        returnIntent.putExtra("btDevAddress", "");
+        setResult(RESULT_CANCELED, returnIntent);
+        btAdapter.cancelDiscovery();
+        finish();
+    }
+
     /*  Define um receptor para o evento de descoberta de dispositivo.
-     */
+         */
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
         /*  Este método é executado sempre que um novo dispositivo for descoberto.

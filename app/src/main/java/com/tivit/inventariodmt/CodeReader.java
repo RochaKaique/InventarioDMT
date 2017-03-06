@@ -46,4 +46,13 @@ public class CodeReader extends AppCompatActivity implements ZXingScannerView.Re
         setResult(RESULT_OK, returnIntent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("barcodeFormat", "");
+        returnIntent.putExtra("barcodeValue", "");
+        setResult(RESULT_CANCELED, returnIntent);
+        finish();
+    }
 }

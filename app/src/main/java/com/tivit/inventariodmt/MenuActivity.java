@@ -117,9 +117,6 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
 
 
                 break;
-            case R.id.tvQRcode:
-                startActivity(new Intent(this, QRCodeActivity.class));
-                break;
             case R.id.tvUploadDB:
                 if(Utilidades.isConnected(getApplicationContext())) {
                     AlertDialog.Builder msg = new AlertDialog.Builder(this);
@@ -150,8 +147,6 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
                 break;
         }
     }
-
-
 
     public void abreAteste(View view)
     {

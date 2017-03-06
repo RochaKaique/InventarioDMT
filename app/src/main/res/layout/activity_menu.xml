@@ -124,22 +124,6 @@
                 android:layout_alignStart="@+id/tvCadastrarEquipamento" />
 
             <TextView
-                android:id="@+id/tvQRcode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:drawableTop="@drawable/ic_action_qrcode"
-                android:elevation="3dp"
-                android:onClick="clicaAbrir"
-                android:text="QRcode e BARCode"
-
-                android:layout_alignBaseline="@+id/button2"
-                android:layout_alignBottom="@+id/button2"
-                android:layout_toRightOf="@+id/tvDownloadDados"
-                android:layout_toEndOf="@+id/tvDownloadDados" />
-
-            <TextView
                 android:id="@+id/tvCadastrarEquipamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
