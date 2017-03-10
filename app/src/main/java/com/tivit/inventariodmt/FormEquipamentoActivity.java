@@ -47,6 +47,7 @@ import com.tivit.inventariodmt.dto.ModeloDTO;
 import com.tivit.inventariodmt.dto.StatusDTO;
 import com.tivit.inventariodmt.dto.TipoEquipamentoDTO;
 import com.tivit.inventariodmt.dto.UsuarioDTO;
+import com.tivit.inventariodmt.dto.UsuarioFinalDTO;
 
 public class FormEquipamentoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnBtEventListener {
 
@@ -182,6 +183,8 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
             values.put(EquipamentoContract.Columnas.FABRICANTE, codigoFabricante);
             int codigoModelo = ((ModeloDTO) modelo.getSelectedItem()).getInv_FS_Mod_Id_Modelo();
             values.put(EquipamentoContract.Columnas.MODELO, codigoModelo);
+            int codigoUsuarioFinal = ((UsuarioFinalDTO) usuario.getSelectedItem()).getInv_FS_usf_id_usuario();
+            //values.put(EquipamentoContract.Columnas.USUARIO_FINAL, codigoUsuarioFinal);
 
             AlertDialog.Builder msg = new AlertDialog.Builder(this);
             msg.setTitle(R.string.confirm).setMessage(R.string.keep_location);
@@ -196,15 +199,15 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i){
                     EquipamentoDAO equipamentoDAO = new EquipamentoDAO(FormEquipamentoActivity.this);
-                    if(!equipamentoDAO.findByRfid(recebeRfid.getText().toString().trim())) {
+                   // if(!equipamentoDAO.findByRfid(recebeRfid.getText().toString().trim())) {
                         getContentResolver().insert(EquipamentoContract.CONTENT_URI, values);
                         //SyncAdapter.sincronizarAhora(getApplicationContext(), true);
                         limpaCampos();
                         Toast.makeText(getApplicationContext(), getString(R.string.equipament_save), Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Já existe um equipamento com este RFID", Toast.LENGTH_LONG).show();
-                    }
+                    //}
+                    //else{
+                      //  Toast.makeText(getApplicationContext(), "Já existe um equipamento com este RFID", Toast.LENGTH_LONG).show();
+                    //}
                 }
             });
             msg.show();
@@ -279,9 +282,9 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
 
         comboModelo(fabricante.getSelectedItemPosition() + 1);
 
-//        1ArrayAdapter<UsuarioDTO> adUsuario = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarUsuarios());
-//        usuario = (Spinner) findViewById(R.id.spUsuario);
-//        usuario.setAdapter(adUsuario);
+        ArrayAdapter<UsuarioFinalDTO> adUsuarioFinal = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarUsuariosFinais());
+        usuario = (Spinner) findViewById(R.id.spUsuario);
+        usuario.setAdapter(adUsuarioFinal);
 
         ArrayAdapter<StatusDTO> adStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, combos.listarStatus());
         status = (Spinner) findViewById(R.id.spStatus);

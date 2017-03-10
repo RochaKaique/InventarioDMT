@@ -33,7 +33,9 @@ public class Constantes {
     public static final String GET_STATUS = IP + PORTA +"/InventarioDMT_Ws/webresources/status/listar/"+ MenuActivity.login + "/";
     public static final String GET_TP_EQUIPAMENTO = IP + PORTA +"/InventarioDMT_Ws/webresources/tipoequipamento/listar/"+ MenuActivity.login + "/";
     public static final String GET_USUARIO = IP + PORTA +"/InventarioDMT_Ws/webresources/usuario/listar/"+ MenuActivity.login + "/";
-
+    public static final String GET_CENTRO_CUSTO = IP + PORTA + "/InventarioDMT_Ws/webresources/centrocusto/listar/" + MenuActivity.login + "/";
+    public static final String GET_ORGANIZACAO = IP + PORTA + "/InventarioDMT_Ws/webresources/organizacao/listar/" + MenuActivity.login + "/";
+    public static final String GET_USUARIO_FINAL = IP + PORTA +"/InventarioDMT_Ws/webresources/usuarioFinal/listar/" + MenuActivity.login + "/";
     /**
      * Campos de las respuestas Json
      */

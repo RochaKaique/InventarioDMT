@@ -30,26 +30,32 @@ import com.tivit.inventariodmt.DownloadActivity;
 import com.tivit.inventariodmt.MenuActivity;
 import com.tivit.inventariodmt.R;
 import com.tivit.inventariodmt.dao.DatabaseHelper;
+import com.tivit.inventariodmt.dataconsistency.provider.CentroCustoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.DepartamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.FabricanteContract;
 import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
 import com.tivit.inventariodmt.dataconsistency.provider.ModeloContract;
+import com.tivit.inventariodmt.dataconsistency.provider.OrganizacaoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.StatusContract;
 import com.tivit.inventariodmt.dataconsistency.provider.TipoEquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.UsuarioContract;
+import com.tivit.inventariodmt.dataconsistency.provider.UsuarioFinalContract;
 import com.tivit.inventariodmt.dataconsistency.utils.Constantes;
 import com.tivit.inventariodmt.dataconsistency.utils.Criptografia;
 import com.tivit.inventariodmt.dataconsistency.utils.Utilidades;
 import com.tivit.inventariodmt.dataconsistency.web.VolleySingleton;
+import com.tivit.inventariodmt.dto.CentroCustoDTO;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.EquipamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
 import com.tivit.inventariodmt.dto.ModeloDTO;
+import com.tivit.inventariodmt.dto.OrganizacaoDTO;
 import com.tivit.inventariodmt.dto.StatusDTO;
 import com.tivit.inventariodmt.dto.TipoEquipamentoDTO;
 import com.tivit.inventariodmt.dto.UsuarioDTO;
+import com.tivit.inventariodmt.dto.UsuarioFinalDTO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -167,6 +173,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 downloadDepartamentos(syncResult);
                 downloadModelos(syncResult);
                 downloadTpEquipamentos(syncResult);
+                downloadCentroCusto(syncResult);
+                downloadOrganizacao(syncResult);
+                downloadUsuariosFinais(syncResult);
                 break;
             case 3:
                 downloadUsuarios(syncResult);
@@ -297,6 +306,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    //SINCRONIZAÇÃO DE USUARIO FINAL
+
+    private void downloadUsuarioFinal(final SyncResult syncResult) {
+        Log.i(TAG, "Atualizando.");
+        try {
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_DEPARTAMENTO + Criptografia.encrypt(MenuActivity.pass),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            atualizarDepartamentos(response, syncResult);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(TAG, error.toString());
+
+                        }
+                    }
+            );
+            jr.setRetryPolicy(new DefaultRetryPolicy(6000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.toString());
+
+        }
+    }
+
     //SINCRONIZAÇÃO DE FABRICANTE
 
     private void downloadFabricantes(final SyncResult syncResult) {
@@ -328,6 +369,71 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         }
     }
+
+    //SINCRONIZACAO DE CENTRO DE CUSTO
+
+    private void downloadCentroCusto(final SyncResult syncResult) {
+        Log.i(TAG, "Atualizando.");
+        try {
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_CENTRO_CUSTO + Criptografia.encrypt(MenuActivity.pass),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            atualizarCentroCusto(response, syncResult);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(TAG, error.toString());
+
+                        }
+                    }
+            );
+            jr.setRetryPolicy(new DefaultRetryPolicy(6000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.toString());
+
+        }
+    }
+
+    //SINCRONIZAÇÃO DE ORGANIZAÇÃO
+
+    private void downloadOrganizacao(final SyncResult syncResult) {
+        Log.i(TAG, "Atualizando.");
+        try {
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_ORGANIZACAO + Criptografia.encrypt(MenuActivity.pass),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            atualizarOrganizacao(response, syncResult);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(TAG, error.toString());
+
+                        }
+                    }
+            );
+            jr.setRetryPolicy(new DefaultRetryPolicy(6000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.toString());
+
+        }
+    }
+
 
     //SINCRONIZAÇÃO DE MODELOS
 
@@ -436,6 +542,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public void onResponse(JSONArray response) {
                             atualizarUsuario(response, syncResult);
+                            requisitouUsuario = true;
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e(TAG, error.toString());
+                            requisitouUsuario = true;
+                        }
+                    }
+            );
+            jr.setRetryPolicy(new DefaultRetryPolicy(6000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.toString());
+
+        }
+    }
+
+    // SENCRONIZAÇÃO DE USUARIOS FINAIS
+    private void downloadUsuariosFinais(final SyncResult syncResult) {
+        Log.i(TAG, "Atualizando.");
+        try {
+            JsonArrayRequest jr = new JsonArrayRequest(Request.Method.GET, Constantes.GET_USUARIO_FINAL + Criptografia.encrypt(MenuActivity.pass),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            atualizarUsuariosFinais(response, syncResult);
                             requisitouUsuario = true;
                         }
                     },
@@ -1002,6 +1140,132 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             syncResult.stats.numInserts++;
             getDb().insert(FabricanteContract.FABRICANTE,null,values);
+        }
+        //ApresentacaoActivity.start +=1;
+        if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+            Log.i(TAG, "Aplicando operações...");
+
+            //resolver.notifyChange(FabricanteContract.CONTENT_URI,null,false);
+            Log.i(TAG, "Sincronização finalizada.");
+
+        } else {
+            Log.i(TAG, "Não foi necessário sincronizar");
+        }
+
+    }
+
+    private void atualizarCentroCusto(JSONArray response, SyncResult syncResult) {
+
+        CentroCustoDTO[] res = gson.fromJson(response != null ? response.toString() : null, CentroCustoDTO[].class);
+        List<CentroCustoDTO> data = Arrays.asList(res);
+
+        Gson gson = new Gson();
+        Log.i(TAG, gson.toJson(data));
+
+        HashMap<String, CentroCustoDTO> expenseMap = new HashMap<String, CentroCustoDTO>();
+        for (CentroCustoDTO c : data) {
+            expenseMap.put(String.valueOf(c.getInv_FS_CC_Id_Centro_Custo()), c);
+        }
+
+
+        for (CentroCustoDTO c : expenseMap.values()) {
+            ContentValues values = new ContentValues();
+            values.put(CentroCustoContract.Colunas._ID, c.getInv_FS_CC_Id_Centro_Custo());
+            values.put(CentroCustoContract.Colunas.NOME, c.getInv_FS_CC_Nome_Centro_Custo());
+            values.put(CentroCustoContract.Colunas.DESCRICAO, c.getInv_FS_CC_Descricao());
+            values.put(CentroCustoContract.Colunas.ID_DEPARTAMENTO, c.getInv_fs_CC_Id_Departamento());
+
+            syncResult.stats.numInserts++;
+            getDb().insert(CentroCustoContract.CENTRO_CUSTO,null,values);
+        }
+        //ApresentacaoActivity.start +=1;
+        if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+            Log.i(TAG, "Aplicando operações...");
+
+            //resolver.notifyChange(FabricanteContract.CONTENT_URI,null,false);
+            Log.i(TAG, "Sincronização finalizada.");
+
+        } else {
+            Log.i(TAG, "Não foi necessário sincronizar");
+        }
+    }
+
+    private void atualizarOrganizacao(JSONArray response, SyncResult syncResult) {
+
+        OrganizacaoDTO[] res = gson.fromJson(response != null ? response.toString() : null, OrganizacaoDTO[].class);
+        List<OrganizacaoDTO> data = Arrays.asList(res);
+
+        Gson gson = new Gson();
+        Log.i(TAG, gson.toJson(data));
+
+        HashMap<String, OrganizacaoDTO> expenseMap = new HashMap<String, OrganizacaoDTO>();
+        for (OrganizacaoDTO o : data) {
+            expenseMap.put(String.valueOf(o.getInv_FS_Org_Id_Organizacao()), o);
+        }
+
+
+        for (OrganizacaoDTO o : expenseMap.values()) {
+            ContentValues values = new ContentValues();
+            values.put(OrganizacaoContract.Colunas._ID, o.getInv_FS_Org_Id_Organizacao());
+            values.put(OrganizacaoContract.Colunas.NOME, o.getInv_FS_Org_Nome_Organizacao());
+            values.put(OrganizacaoContract.Colunas.DESCRICAO, o.getInv_FS_Org_Descricao());
+            values.put(OrganizacaoContract.Colunas.CNPJ, o.getInv_FS_Org_CNPJ());
+
+            syncResult.stats.numInserts++;
+            getDb().insert(OrganizacaoContract.ORGANIZACAO,null,values);
+        }
+        //ApresentacaoActivity.start +=1;
+        if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+            Log.i(TAG, "Aplicando operações...");
+
+            //resolver.notifyChange(FabricanteContract.CONTENT_URI,null,false);
+            Log.i(TAG, "Sincronização finalizada.");
+
+        } else {
+            Log.i(TAG, "Não foi necessário sincronizar");
+        }
+
+    }
+
+    private void atualizarUsuariosFinais(JSONArray response, SyncResult syncResult) {
+
+        UsuarioFinalDTO[] res = gson.fromJson(response != null ? response.toString() : null, UsuarioFinalDTO[].class);
+        List<UsuarioFinalDTO> data = Arrays.asList(res);
+
+        Gson gson = new Gson();
+        Log.i(TAG, gson.toJson(data));
+
+        HashMap<String, UsuarioFinalDTO> expenseMap = new HashMap<String, UsuarioFinalDTO>();
+        for (UsuarioFinalDTO u : data) {
+            expenseMap.put(String.valueOf(u.getInv_FS_usf_id_usuario()),u);
+        }
+
+
+        for (UsuarioFinalDTO u : expenseMap.values()) {
+            ContentValues values = new ContentValues();
+            values.put(UsuarioFinalContract.Colunas._ID, u.getInv_FS_usf_id_usuario());
+            values.put(UsuarioFinalContract.Colunas.NOME, u.getInv_FS_usf_Nome());
+            values.put(UsuarioFinalContract.Colunas.ID_CORPORATIVO, u.getInv_FS_usf_Id_Corporativo());
+            values.put(UsuarioFinalContract.Colunas.STATUS, u.getInv_FS_usf_Status());
+            values.put(UsuarioFinalContract.Colunas.CARGO, u.getInv_FS_usf_Cargo());
+            values.put(UsuarioFinalContract.Colunas.RAMAL, u.getInv_FS_usf_Ramal());
+            values.put(UsuarioFinalContract.Colunas.EMAIL, u.getInv_FS_usf_Email());
+            values.put(UsuarioFinalContract.Colunas.CELULAR, u.getInv_FS_usf_Celular());
+            values.put(UsuarioFinalContract.Colunas.LOGIN, u.getInv_FS_usf_Login());
+            values.put(UsuarioFinalContract.Colunas.DATA_ADMISSAO, u.getInv_FS_usf_Data_admissao());
+            values.put(UsuarioFinalContract.Colunas.CPF, u.getInv_FS_usf_CPF());
+            values.put(UsuarioFinalContract.Colunas.RG, u.getInv_FS_usf_RG());
+            values.put(UsuarioFinalContract.Colunas.DATA_NASCIMENTO, u.getInv_FS_usf_Data_Nascimento());
+            values.put(UsuarioFinalContract.Colunas.GESTOR, u.getInv_FS_usf_Nome_Gestor());
+            values.put(UsuarioFinalContract.Colunas.RAMAL_GESTOR, u.getInv_FS_usf_Ramal_Gestor());
+            values.put(UsuarioFinalContract.Colunas.OBSERVACAO, u.getInv_FS_usf_Observacao());
+            values.put(UsuarioFinalContract.Colunas.ID_ORGANIZACAO, u.getInv_fs_ic_Id_Organizacao());
+            values.put(UsuarioFinalContract.Colunas.ID_DEPARTAMENTO, u.getInv_fs_ic_Id_Departamento());
+            values.put(UsuarioFinalContract.Colunas.ID_LOCALIDADE, u.getInv_fs_ic_Id_Localidade());
+            values.put(UsuarioFinalContract.Colunas.ID_CENTRO_CUSTO, u.getInv_FS_usf_Id_Centro_Custo());
+
+            syncResult.stats.numInserts++;
+            getDb().insert(UsuarioFinalContract.USUARIO_FINAL,null,values);
         }
         //ApresentacaoActivity.start +=1;
         if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {

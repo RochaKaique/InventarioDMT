@@ -46,10 +46,11 @@ public class EquipamentoContract {
         public static final String DATA = "inv_fs_ic_Data_Criacao";
         public static final String FABRICANTE = "inv_fs_ic_Id_Fabricante";
         public static final String MODELO = "inv_fs_ic_Id_Modelo";
-
+        public static final String USUARIO_FINAL = "inv_fs_ic_Id_Usuario_Final";
         public static final String ESTADO = "inv_fs_ic_EstadoSinc";
         public static final String ID_REMOTA = "inv_fs_ic_idRemoto";
         public final static String INSERT_PENDING = "inv_fs_ic_insert_pending";
+        public static final String USUARIO_CADASTRO = "inv_fs_ic_Id_Usuario_Criacao";
 
     }
 }

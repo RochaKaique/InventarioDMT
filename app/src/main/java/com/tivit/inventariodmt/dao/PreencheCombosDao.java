@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.tivit.inventariodmt.dataconsistency.provider.EquipamentoContract;
 import com.tivit.inventariodmt.dataconsistency.provider.LocalidadeContract;
+import com.tivit.inventariodmt.dataconsistency.provider.UsuarioFinalContract;
 import com.tivit.inventariodmt.dto.DepartamentoDTO;
 import com.tivit.inventariodmt.dto.FabricanteDTO;
 import com.tivit.inventariodmt.dto.LocalidadeDTO;
@@ -18,6 +19,7 @@ import com.tivit.inventariodmt.dto.ModeloDTO;
 import com.tivit.inventariodmt.dto.StatusDTO;
 import com.tivit.inventariodmt.dto.TipoEquipamentoDTO;
 import com.tivit.inventariodmt.dto.UsuarioDTO;
+import com.tivit.inventariodmt.dto.UsuarioFinalDTO;
 
 /**
  * Created by alex.almeida on 15/08/2016.
@@ -103,6 +105,28 @@ public class PreencheCombosDao {
             cursor.close();
         }
         return lL;
+    }
+
+    public List<UsuarioFinalDTO> listarUsuariosFinais(){
+        Uri uri = UsuarioFinalContract.CONTENT_URI;
+        List<UsuarioFinalDTO> lUsf = new ArrayList<>();
+//        Cursor cursor = getDb().rawQuery("SELECT inv_FS_usf_id_usuario, inv_FS_usf_CPF, inv_FS_usf_Cargo, inv_FS_usf_Celular, inv_FS_usf_Data_Nascimento," +
+//                " inv_FS_usf_Data_admissao, inv_FS_usf_Email, inv_FS_usf_Id_Centro_Custo, inv_FS_usf_Id_Corporativo, inv_FS_usf_Login," +
+//                " nv_FS_usf_Nome, inv_FS_usf_Nome_Gestor, inv_FS_usf_Observacao, inv_FS_usf_Status, inv_FS_usf_id_Departamento, inv_FS_usf_RG," +
+//                " inv_FS_usf_id_Localidade, inv_FS_usf_id_Organizacao, inv_FS_usf_Ramal, inv_FS_usf_Ramal_Gestor FROM  inv_FS_Usuario_Final", null);
+        Cursor cursor = getDb().rawQuery("SELECT * FROM inv_FS_Usuario_Final", null);
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0){
+            do{
+                UsuarioFinalDTO usu = new UsuarioFinalDTO();
+                usu.setInv_FS_usf_id_usuario(cursor.getInt(cursor.getColumnIndex("inv_FS_usf_id_usuario")));
+                usu.setInv_FS_usf_Nome(cursor.getString(cursor.getColumnIndex("inv_FS_usf_Nome")));
+                lUsf.add(usu);
+            }while(cursor.moveToNext());
+            cursor.close();
+        }
+        return lUsf;
+
     }
 
     /*public List<LocalidadeDTO> listarLocalidades() throws SQLException {

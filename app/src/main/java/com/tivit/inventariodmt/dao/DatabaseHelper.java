@@ -45,8 +45,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_Subst_id_Sub_Status INTEGER PRIMARY KEY, " +
                 "inv_FS_Subst_Nome_Sub_Status TEXT, " +
                 "inv_FS_Subst_Descricao TEXT, " +
-                "inv_fs_ic_Id_Status INTEGER, " +
-                "FOREIGN KEY(inv_fs_ic_Id_Status) REFERENCES inv_FS_Status(inv_FS_St_id_Status));");
+                "inv_fs_Subst_Id_Status INTEGER, " +
+                "FOREIGN KEY(inv_fs_Subst_Id_Status) REFERENCES inv_FS_Status(inv_FS_St_id_Status));");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Fornecedor(" +
                 "inv_FS_For_Id_Fornecedor INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -93,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_Loc_nome_localidade TEXT);");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Organizacao(" +
-                "inv_FS_Org_Id_Organizacao INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_Org_Id_Organizacao INTEGER PRIMARY KEY, " +
                 "inv_FS_Org_Nome_Organizacao TEXT, " +
                 "inv_FS_Org_CNPJ TEXT, " +
                 "inv_FS_Org_Descricao TEXT);");
@@ -106,11 +106,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(inv_FS_Dep_Id_Organizacao) REFERENCES inv_FS_Organizacao(inv_FS_Org_Id_Organizacao));");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Centro_Custo(" +
-                "inv_FS_CC_Id_Centro_Custo INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "inv_FS_CC_Id_Centro_Custo INTEGER PRIMARY KEY, " +
                 "inv_FS_CC_Nome_Centro_Custo TEXT, " +
                 "inv_FS_CC_Descricao TEXT, " +
-                "inv_fs_ic_Id_Departamento INTEGER, " +
-                "FOREIGN KEY (inv_fs_ic_Id_Departamento) REFERENCES inv_FS_Departamento(inv_FS_Dep_Id_Departamento));");
+                "inv_fs_CC_Id_Departamento INTEGER, " +
+                "FOREIGN KEY (inv_fs_CC_Id_Departamento) REFERENCES inv_FS_Departamento(inv_FS_Dep_Id_Departamento));");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_Perfil_Usuario(" +
                 "inv_PU_Id_Perfil_Usuario INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -134,13 +134,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_usf_Nome_Gestor TEXT, " +
                 "inv_FS_usf_Ramal_Gestor TEXT, " +
                 "inv_FS_usf_Observacao TEXT, " +
-                "inv_fs_ic_Id_Organizacao INTEGER, " +
-                "inv_fs_ic_Id_Departamento INTEGER, " +
-                "inv_fs_ic_Id_Localidade INTEGER, " +
+                "inv_fs_usf_Id_Organizacao INTEGER, " +
+                "inv_fs_usf_Id_Departamento INTEGER, " +
+                "inv_fs_usf_Id_Localidade INTEGER, " +
                 "inv_FS_usf_Id_Centro_Custo INTEGER, " +
-                "FOREIGN KEY(inv_fs_ic_Id_Organizacao) REFERENCES inv_FS_Organizacao(inv_FS_Org_Id_Organizacao), " +
-                "FOREIGN KEY(inv_fs_ic_Id_Departamento) REFERENCES inv_FS_Departamento(inv_FS_Dep_Id_Departamento), " +
-                "FOREIGN KEY(inv_fs_ic_Id_Localidade) REFERENCES inv_FS_Localidade(inv_FS_Loc_Id_Localidade), " +
+                "FOREIGN KEY(inv_fs_usf_Id_Organizacao) REFERENCES inv_FS_Organizacao(inv_FS_Org_Id_Organizacao), " +
+                "FOREIGN KEY(inv_fs_usf_Id_Departamento) REFERENCES inv_FS_Departamento(inv_FS_Dep_Id_Departamento), " +
+                "FOREIGN KEY(inv_fs_usf_Id_Localidade) REFERENCES inv_FS_Localidade(inv_FS_Loc_Id_Localidade), " +
                 "FOREIGN KEY(inv_FS_usf_Id_Centro_Custo) REFERENCES inv_FS_Centro_Custo(inv_FS_CC_Id_Centro_Custo));");
 
         sqLiteDatabase.execSQL("CREATE TABLE inv_FS_Kit_Instalacao(" +
@@ -176,9 +176,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "inv_FS_TR_Validade_Termo INTEGER, " +
                 "inv_FS_TR_Termo_Assinado INTEGER, " +
                 "inv_FS_TR_Codigo_Confirmação TEXT, " +
-                "inv_fs_ic_Id_Usuario_Final INTEGER, " +
+                "inv_fs_TR_Id_Usuario_Final INTEGER, " +
                 "FOREIGN KEY(Inv_FS_TR_Id_IC) REFERENCES Inv_FS_Item_config(inv_fs_ic_Id_IC));" +
-                "FOREIGN KEY(inv_fs_ic_Id_Usuario_Final) REFERENCES inv_FS_Usuario_Final(inv_FS_usf_id_usuario));");
+                "FOREIGN KEY(inv_fs_TR_Id_Usuario_Final) REFERENCES inv_FS_Usuario_Final(inv_FS_usf_id_usuario));");
 
         sqLiteDatabase.execSQL("CREATE TABLE Inv_FS_Item_config(" +
                 "inv_fs_ic_Id_IC INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -249,35 +249,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
       //INSERÇÕES DE TESTE NO BANCO
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (1, 'Desktop');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (2, 'Notebook');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_Perfil_Usuario (inv_PU_Nome_Perfil_Usuario) VALUES ('Padrao')");
-        try {
-            sqLiteDatabase.execSQL("INSERT INTO inv_Usuario (inv_us_Login, inv_us_Senha, inv_us_Perfil) VALUES ('kaique.rocha', '"+ Criptografia.encrypt("1012")+"', 1)");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (1, 'TI');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (2, 'Fiscal');");
-
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (1, 'Dell')");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (2, 'HP')");
-
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (1, 'Em Uso');");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (2, 'Manutenção');");
-
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
-                "VALUES (1, 'Pavillion', 2, 2015)");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
-                "VALUES (2, 'Vostro', 1, 2015);");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
-                "VALUES (3, 'Optiplex', 1, 2015);");
-
-
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (1, 'CENESP', 'São Paulo')");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (2, 'Ipiranga', 'São Paulo')");
-        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (3, 'Transamerica', 'São Paulo')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (1, 'Desktop');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Tipo_Equipamento (inv_FS_TP_Id_Tipo_Equipamento, inv_FS_TP_Nome_Equipamento) VALUES (2, 'Notebook');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_Perfil_Usuario (inv_PU_Nome_Perfil_Usuario) VALUES ('Padrao')");
+//        try {
+//            sqLiteDatabase.execSQL("INSERT INTO inv_Usuario (inv_us_Login, inv_us_Senha, inv_us_Perfil) VALUES ('kaique.rocha', '"+ Criptografia.encrypt("1012")+"', 1)");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (1, 'TI');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Departamento (inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento) VALUES (2, 'Fiscal');");
+//
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (1, 'Dell')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Fabricante (inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante) VALUES (2, 'HP')");
+//
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (1, 'Em Uso');");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Status (inv_FS_St_id_Status, inv_FS_St_Nome_Status) VALUES (2, 'Manutenção');");
+//
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
+//                "VALUES (1, 'Pavillion', 2, 2015)");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
+//                "VALUES (2, 'Vostro', 1, 2015);");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Modelo (inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo, inv_FS_Mod_Id_Fabricante, Inv_FS_Mod_Ano) " +
+//                "VALUES (3, 'Optiplex', 1, 2015);");
+//
+//
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (1, 'CENESP', 'São Paulo')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (2, 'Ipiranga', 'São Paulo')");
+//        sqLiteDatabase.execSQL("INSERT INTO inv_FS_Localidade(inv_FS_Loc_Id_Localidade, inv_FS_Loc_Descricao, inv_FS_Loc_cidade) VALUES (3, 'Transamerica', 'São Paulo')");
     }
 
     @Override

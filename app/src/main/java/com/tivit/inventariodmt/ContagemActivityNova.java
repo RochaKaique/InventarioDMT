@@ -49,9 +49,9 @@ import static com.tivit.inventariodmt.R.styleable.View;
 
 public class ContagemActivityNova extends AppCompatActivity implements OnBtEventListener {
 
-    public static int ENABLE_BLUETOOTH = 1;
-    public static int SELECT_PAIRED_DEVICE = 2;
-    public static int SELECT_DISCOVERED_DEVICE = 3;
+//    public static int ENABLE_BLUETOOTH = 1;
+//    public static int SELECT_PAIRED_DEVICE = 2;
+//    public static int SELECT_DISCOVERED_DEVICE = 3;
 
     private R900 leitor;
     public static final int MSG_ENABLE_LINK_CTRL = 10;
@@ -211,6 +211,13 @@ public class ContagemActivityNova extends AppCompatActivity implements OnBtEvent
             String addressDispositivo = data.getStringExtra("btDevAddress");
             leitor.conectar(addressDispositivo);
         }
+        else{
+            btnFinaliza.setVisibility(android.view.View.INVISIBLE);
+            btnConecta.setVisibility(android.view.View.VISIBLE);
+            llblInfo.setVisibility(android.view.View.INVISIBLE);
+            progressBar.setVisibility(android.view.View.INVISIBLE);
+
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -234,51 +241,6 @@ public class ContagemActivityNova extends AppCompatActivity implements OnBtEvent
             }
         }
     };
-
-
-    public void finalizarContagem() {
-//      System.out.println("F I N A L I Z A R");
-//      leitura = false;
-        verificarRfids();
-        String idsInvalidos = "" +rfidInvalido.size();
-        String idsValidos = "" + rfidValido.size();
-        String idsFaltantes = "" + (totalEqLocalizados - rfidValido.size());
-        txtNaoInventLoc.setText(idsInvalidos);
-        txtEncontrados.setText("\n" + idsValidos);
-
-
-        rfidValido.clear();
-        rfidInvalido.clear();
-        rfids.clear();
-        verificaProgress = false;
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(R.string.ending);
-//        builder.setMessage(R.string.confirm_end_score);
-//        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int id) {
-//                acionarContagem.setText(R.string.continue_reading);
-//            }
-//        });
-//        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int id) {
-//                //acionarContagem.setText(R.string.score_starting);
-//                verificarRfids();
-//                String idsInvalidos = "" +rfidInvalido.size();
-//                String idsValidos = "" + rfidValido.size();
-//                txtNaoInventLoc.setText(idsInvalidos);
-//                txtEncontrados.setText("\n" + idsValidos);
-//
-//                rfidValido.clear();
-//                rfidInvalido.clear();
-//                rfids.clear();
-//                verificaProgress = false;
-//            }
-//        });
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-    }
 
     public void verificarRfids() {
         Uri uri = EquipamentoContract.CONTENT_URI;
