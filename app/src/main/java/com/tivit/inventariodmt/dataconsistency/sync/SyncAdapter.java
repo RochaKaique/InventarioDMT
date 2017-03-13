@@ -12,10 +12,12 @@ import android.content.OperationApplicationException;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -192,6 +194,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public void onResponse(JSONArray response) {
                             procesarRespuestaGet(response, syncResult);
+                            DownloadActivity.txtResultado.setText("Download Realizado");
+                            DownloadActivity.txtResultado.setTextColor(Color.GREEN);
+                            DownloadActivity.txtResultado.setVisibility(View.VISIBLE);
+                            DownloadActivity.pgDownload.setVisibility(View.INVISIBLE);
+                            DownloadActivity.tvProgress.setVisibility(View.INVISIBLE);
 
                         }
                     },
@@ -199,7 +206,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.e(TAG, error.toString());
-
+                            DownloadActivity.txtResultado.setText("Falha no Download");
+                            DownloadActivity.txtResultado.setTextColor(Color.RED);
+                            DownloadActivity.txtResultado.setVisibility(View.VISIBLE);
+                            DownloadActivity.pgDownload.setVisibility(View.INVISIBLE);
+                            DownloadActivity.tvProgress.setVisibility(View.INVISIBLE);
                         }
                     }
             );
@@ -207,6 +218,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(getContext()).addToRequestQueue(jr);
+
         }
         catch (Exception e)
         {

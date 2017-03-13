@@ -186,31 +186,49 @@ public class FormEquipamentoActivity extends AppCompatActivity implements Adapte
             int codigoUsuarioFinal = ((UsuarioFinalDTO) usuario.getSelectedItem()).getInv_FS_usf_id_usuario();
             //values.put(EquipamentoContract.Columnas.USUARIO_FINAL, codigoUsuarioFinal);
 
-            AlertDialog.Builder msg = new AlertDialog.Builder(this);
-            msg.setTitle(R.string.confirm).setMessage(R.string.keep_location);
-            msg.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    localidade.requestFocus();
-                }
-            });
+            if (codigoTipoEquipamento < 0)
+                Toast.makeText(this, "Selecione o Tipo do Equipamento", Toast.LENGTH_SHORT).show();
+            else if (codigoStatus < 0)
+                Toast.makeText(this, "Selecione o Status do Equipamento", Toast.LENGTH_SHORT).show();
+            else if (codigoDepartamento < 0)
+                Toast.makeText(this, "Selecione o Departamento do Equipamento", Toast.LENGTH_SHORT).show();
+            else if (codigoLocalidade < 0)
+                Toast.makeText(this, "Selecione a Localidade do Equipamento", Toast.LENGTH_SHORT).show();
+            else if (codigoFabricante < 0)
+                Toast.makeText(this, "Selecione o Fabricante do Equipamento", Toast.LENGTH_SHORT).show();
+            else if (codigoModelo < 0)
+                Toast.makeText(this, "Selecione o Modelo do Equipamento", Toast.LENGTH_SHORT).show();
+            else if (codigoUsuarioFinal < 0)
+                Toast.makeText(this, "Selecione o Usuario do Equipamento", Toast.LENGTH_SHORT).show();
+            else {
 
-            msg.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i){
-                    EquipamentoDAO equipamentoDAO = new EquipamentoDAO(FormEquipamentoActivity.this);
-                   // if(!equipamentoDAO.findByRfid(recebeRfid.getText().toString().trim())) {
+
+                AlertDialog.Builder msg = new AlertDialog.Builder(this);
+                msg.setTitle(R.string.confirm).setMessage(R.string.keep_location);
+                msg.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        localidade.requestFocus();
+                    }
+                });
+
+                msg.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EquipamentoDAO equipamentoDAO = new EquipamentoDAO(FormEquipamentoActivity.this);
+                        // if(!equipamentoDAO.findByRfid(recebeRfid.getText().toString().trim())) {
                         getContentResolver().insert(EquipamentoContract.CONTENT_URI, values);
                         //SyncAdapter.sincronizarAhora(getApplicationContext(), true);
                         limpaCampos();
                         Toast.makeText(getApplicationContext(), getString(R.string.equipament_save), Toast.LENGTH_LONG).show();
-                    //}
-                    //else{
-                      //  Toast.makeText(getApplicationContext(), "Já existe um equipamento com este RFID", Toast.LENGTH_LONG).show();
-                    //}
-                }
-            });
-            msg.show();
+                        //}
+                        //else{
+                        //  Toast.makeText(getApplicationContext(), "Já existe um equipamento com este RFID", Toast.LENGTH_LONG).show();
+                        //}
+                    }
+                });
+                msg.show();
+            }
         }
     }
 

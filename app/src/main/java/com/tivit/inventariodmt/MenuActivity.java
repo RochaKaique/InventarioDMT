@@ -52,7 +52,7 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
             }
         }
 
-        sPreferences = getSharedPreferences("firstRun", MODE_PRIVATE);
+        sPreferences = getSharedPreferences("com.tivit.inventariodmt", MODE_PRIVATE);
         Handler handler = new Handler();
         handler.post(this);
 
@@ -104,13 +104,13 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
             case R.id.tvDownloadDados:
                 if(Utilidades.isConnected(getApplicationContext())) {
                     startActivity(new Intent(this, DownloadActivity.class));
-                    SyncAdapter.sincronizarAhora(getApplicationContext(),false,1);
+                    //SyncAdapter.sincronizarAhora(getApplicationContext(),false,1);
                 }
                 else
                 {
                     AlertDialog.Builder msg = new AlertDialog.Builder(this);
-                    msg.setTitle("Verifique A Conexão");
-                    msg.setMessage("Conecte-se à Internet!");
+                    msg.setTitle("Verifique a Conexão");
+                    msg.setMessage("Essa funcionalidade só está disponível com o dispositivo conectado à internet!");
                     msg.setNeutralButton("OK",null);
                     msg.show();
                 }
@@ -142,8 +142,8 @@ public class MenuActivity extends AppCompatActivity implements Runnable{
                 else
                 {
                     AlertDialog.Builder msg = new AlertDialog.Builder(this);
-                    msg.setTitle("Verifique A Conexão");
-                    msg.setMessage("Conecte-se à Internet!");
+                    msg.setTitle("Verifique a Conexão");
+                    msg.setMessage("Essa funcionalidade só está disponível com o dispositivo conectado à internet!");
                     msg.setNeutralButton("OK",null);
                     msg.show();
                 }

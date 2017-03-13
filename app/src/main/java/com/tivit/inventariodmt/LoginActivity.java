@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements Runnable {
         Utilidades.setTaskBarColored(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sPreferences = getSharedPreferences("firstRun", MODE_PRIVATE);
+        sPreferences = getSharedPreferences("com.tivit.inventariodmt", MODE_PRIVATE);
 
         if (sPreferences.getBoolean("firstRun", true)) {
             if (!Utilidades.isConnected(getApplicationContext())) {
@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements Runnable {
         UsuarioDAO usu = new UsuarioDAO(this);
         boolean b = usu.autenticaUsuario(MenuActivity.login.toLowerCase(), MenuActivity.pass);
         if(b){
+            sPreferences.edit().putBoolean("firstRun", false).commit();
             startActivity(new Intent(this, MenuActivity.class));
             finish();
         }else{

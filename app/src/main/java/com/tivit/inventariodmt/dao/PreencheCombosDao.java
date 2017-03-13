@@ -91,6 +91,10 @@ public class PreencheCombosDao {
         Cursor cursor = getDb().rawQuery("SELECT inv_FS_Loc_Id_Localidade, inv_FS_Loc_Endereco, Inv_FS_Loc_Descricao, inv_FS_Loc_cidade FROM inv_FS_Localidade", null);
         //Cursor cursor = resolver.query(uri,LOCALIDADE_PROJECTION,select,null,null);
         assert cursor != null;
+        LocalidadeDTO lFirst = new LocalidadeDTO();
+        lFirst.setInv_FS_Loc_Id_Localidade(-1);
+        lFirst.setInv_FS_Loc_Descricao("Selecione...");
+        lL.add(lFirst);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
@@ -115,6 +119,10 @@ public class PreencheCombosDao {
 //                " nv_FS_usf_Nome, inv_FS_usf_Nome_Gestor, inv_FS_usf_Observacao, inv_FS_usf_Status, inv_FS_usf_id_Departamento, inv_FS_usf_RG," +
 //                " inv_FS_usf_id_Localidade, inv_FS_usf_id_Organizacao, inv_FS_usf_Ramal, inv_FS_usf_Ramal_Gestor FROM  inv_FS_Usuario_Final", null);
         Cursor cursor = getDb().rawQuery("SELECT * FROM inv_FS_Usuario_Final", null);
+        UsuarioFinalDTO uFirst = new UsuarioFinalDTO();
+        uFirst.setInv_FS_usf_id_usuario(-1);
+        uFirst.setInv_FS_usf_Nome("Selecione...");
+        lUsf.add(uFirst);
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
             do{
@@ -129,26 +137,14 @@ public class PreencheCombosDao {
 
     }
 
-    /*public List<LocalidadeDTO> listarLocalidades() throws SQLException {
-        List<LocalidadeDTO> lL = new ArrayList<>();
-        ResultSet rs = null;
-        rs = (ResultSet) getDb().rawQuery("SELECT * FROM inv_FS_Localidade", null);
-        while (rs.next()){
-            LocalidadeDTO l = new LocalidadeDTO();
-            l.set_id(rs.getInt("_id"));
-            l.setCidade_id(rs.getInt("cidade_id"));
-            l.setInv_FS_Loc_Descricao(rs.getString("inv_FS_Loc_Descricao"));
-            l.setInv_FS_Loc_Endereco(rs.getString("inv_FS_Loc_Endereco"));
-
-            lL.add(l);
-        }
-        return lL;
-    }*/
-
     public List<DepartamentoDTO> listarDepartamentos() {
         List<DepartamentoDTO> lD = new ArrayList<>();
 
         Cursor cursor = getDb().rawQuery("SELECT inv_FS_Dep_Id_Departamento, inv_FS_Dep_Nome_Departamento FROM inv_FS_Departamento", null);
+        DepartamentoDTO dFirst = new DepartamentoDTO();
+        dFirst.setInv_FS_Dep_Id_Departamento(-1);
+        dFirst.setInv_FS_Dep_Nome_Departamento("Selecione...");
+        lD.add(dFirst);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
@@ -164,24 +160,14 @@ public class PreencheCombosDao {
         return lD;
     }
 
-    /*public List<String> listarTipoEquipamentos() {
-        this.tipoEquipamentos = new ArrayList<>();
-
-        Cursor cursor = getDb().rawQuery("SELECT inv_FS_TP_Nome_Equipamento FROM inv_FS_Tipo_Equipamento", null);
-        cursor.moveToFirst();
-
-        for(int i = 0; i < cursor.getCount(); i++) {
-            String tipo = cursor.getString(0);
-            tipoEquipamentos.add(tipo);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return tipoEquipamentos;
-    }*/
 
     public List<TipoEquipamentoDTO> listarTipoEquipamentos(){
         List<TipoEquipamentoDTO> tipoEquipamentos = new ArrayList<>();
         Cursor cursor = getDb().rawQuery("SELECT * FROM inv_FS_Tipo_Equipamento", null);
+        TipoEquipamentoDTO tpFirst = new TipoEquipamentoDTO();
+        tpFirst.setInv_FS_TP_Id_Tipo_Equipamento(-1);
+        tpFirst.setInv_FS_TP_Nome_Equipamento("Selecione...");
+        tipoEquipamentos.add(tpFirst);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
@@ -202,6 +188,10 @@ public class PreencheCombosDao {
         List<StatusDTO> lS = new ArrayList<>();
 
         Cursor cursor = getDb().rawQuery("SELECT inv_FS_St_id_Status, inv_FS_St_Nome_Status FROM inv_FS_Status", null);
+        StatusDTO sFirst = new StatusDTO();
+        sFirst.setInv_FS_St_id_Status(-1);
+        sFirst.setInv_FS_St_Nome_Status("Selecione...");
+        lS.add(sFirst);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
@@ -221,6 +211,10 @@ public class PreencheCombosDao {
         List<FabricanteDTO> lF = new ArrayList<>();
 
         Cursor cursor = getDb().rawQuery("SELECT inv_FS_Fab_Id_Fabricante, inv_FS_Fab_Nome_Fabricante FROM inv_FS_Fabricante", null);
+        FabricanteDTO fFirst = new FabricanteDTO();
+        fFirst.setInv_FS_Fab_Id_Fabricante(-1);
+        fFirst.setInv_FS_Fab_Nome_Fabricante("Selecione...");
+        lF.add(fFirst);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
@@ -239,6 +233,10 @@ public class PreencheCombosDao {
         this.modelos = new ArrayList<>();
         List<ModeloDTO> mod = new ArrayList<>();
         Cursor cursor = getDb().rawQuery("SELECT inv_FS_Mod_Id_Modelo, inv_FS_Mod_Nome_Modelo FROM inv_FS_Modelo WHERE inv_FS_Mod_Id_Fabricante = " +codigoFabricante, null);
+        ModeloDTO mFirst = new ModeloDTO();
+        mFirst.setInv_FS_Mod_Id_Modelo(-1);
+        mFirst.setInv_FS_Mod_Nome_Modelo("Selecione...");
+        mod.add(mFirst);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
